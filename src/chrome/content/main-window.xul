@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Keys4All Thunderbird-Addon
+Designed and developed by
+Fraunhofer Institute for Secure Information Technology SIT
+<https://www.sit.fraunhofer.de>
+(C) Copyright FhG SIT, 2018
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<!DOCTYPE overlay >
+<overlay id = "mainwindow-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="stringBundle" src="chrome://vvv-addon/locale/vvv.properties"/>
+	</stringbundleset>
+	<commandset id="messengerCommands">
+		<commandset id="vvv-messengerCmds" oncommandupdate="vvv.update()">
+			<command id="vvv-onButtonClick" oncommand="vvv.onButtonCommand()"/>
+		</commandset>
+	</commandset>
+	<toolbar id="mail-bar3">
+		<toolbarbutton id="button-vvv"
+			image="chrome://vvv-addon/skin/logo.png"
+			command="onButtonClick" />
+		<toolbarspacer id="spring-vvv" width="40"/>
+		<iframe type="chrome" src="chrome://vvv-addon/content/ui/vvv-key-updater.html" id="vvv-key-updater" width="0" height="0" style="width:0;height:0;border: 0;border: none; visibility: hidden; display: none;"/>
+	</toolbar>
+
+	<script type="application/x-javascript" src="chrome://vvv-addon/content/ui/js/vvv-cache.js"/>
+	<script type="application/x-javascript" src="chrome://vvv-addon/content/ui/js/vvv-overlay.js"/>
+</overlay>

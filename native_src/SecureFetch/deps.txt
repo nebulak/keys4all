@@ -1,0 +1,3 @@
+libunbound
+libldns-devel
+//https://github.com/akheron/jansson

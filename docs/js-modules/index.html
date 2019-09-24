@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Keys4All-Addon</h1><p>Keys4All-Addon for Thunderbird</p>
+<p><img src="../Screenshots/verschlüsselung-aktiviert-2.png" alt="screenshot" title="Screenshot"></p>
+<h2>Features</h2><ul>
+<li>DNSSEC verification of SRV-entries</li>
+<li>DANE verification of key-server and LDAP-server</li>
+<li>Auto-import keys from openpgp-keyserver</li>
+<li>Auto-import certificates from ldap</li>
+<li>Key/Certificate upload</li>
+</ul>
+<h2>Limitations</h2><ul>
+<li>Project Status: Working prototype</li>
+<li>Hard-coded values<ul>
+<li>LDAP-URL</li>
+<li>LDAP-Search-Base</li>
+<li>Accepted domain for key/certificate upload</li>
+</ul>
+</li>
+</ul>
+<h2>License</h2><p>The Keys4All-Addon itself is licensed under ...//TODO: Lizenz?.
+3rd-party dependencies and their licenses are listed in the next section.</p>
+<h2>3rd-party dependencies &amp; licenses</h2><ul>
+<li>Twitter Bootstrap 3: MIT</li>
+<li>handlebars.js: MIT</li>
+<li>jquery.mustache: MIT</li>
+<li>jquery2: MIT</li>
+<li>mustache.js: MIT</li>
+<li>openpgp.js: LGPLv3</li>
+<li>subprocess.jsm: MPL/GPLv2/LGPL</li>
+<li>Js-sha256: MIT</li>
+<li>libUnbound: BSD-3-Clause</li>
+<li>ldns: BSD-3-Clause</li>
+<li>openssl: BSD-3-Clause-like</li>
+<li>ldap3: LGPLv3</li>
+</ul>
+<hr>
+<h2>Build</h2><h2>Change configuration</h2><ul>
+<li>Change search base for certificate search<ul>
+<li><strong>LDAP_SEARCH_BASE:</strong> in &quot;/python_src/ldap.py&quot;</li>
+</ul>
+</li>
+<li>Change URL to Ox-Guard for PGP-Key-Upload<ul>
+<li><strong>const BASE_URL:</strong> in &quot;/src/chrome/content/ui/js/vvv-key-upload.js&quot;</li>
+</ul>
+</li>
+<li>Change URL to LDAP-Server &amp; accepted email-domain for account management<ul>
+<li><strong>if (identity.email.endsWith(&quot;keys4all-test.de&quot;))</strong> in &quot;/src/chrome/content/ui/js/vvv-account-manager.js&quot;</li>
+</ul>
+</li>
+</ul>
+<h3>Native binaries &amp; dependencies</h3><p><strong>Dependencies:</strong></p>
+<ul>
+<li>libUnbound</li>
+<li>libLdns</li>
+</ul>
+<p><strong>Building native binaries &amp; dependencies:</strong></p>
+<pre class="prettyprint source"><code>cd ./native_src/SRVFetch/lib/build
+cmake ..
+make
+cd ../../build
+cmake ..
+make
+cd ../../WinGetEnv/build
+cmake -DCMAKE_TOOLCHAIN_FILE=../Toolchain-cross-mingw32-linux.cmake ..
+make</code></pre><h3>Python programs &amp; modules</h3><p><strong>Dependencies:</strong></p>
+<ul>
+<li>ldap3<ul>
+<li>Installation: pip install ldap3</li>
+</ul>
+</li>
+<li>pyinstaller<ul>
+<li>Installation: pip install pyinstaller</li>
+</ul>
+</li>
+</ul>
+<p><strong>Build ldap_tool:</strong></p>
+<pre class="prettyprint source"><code>pyinstaller ldap_tool.py -F --hidden-import ldap3</code></pre><p><strong>Build Thunderbird Addon:</strong></p>
+<ul>
+<li>Execute 'ant' in terminal</li>
+<li>The built addon may be found in the &quot;dist&quot;-directory</li>
+</ul>
+<hr>
+<h1>Appendix</h1><h2>Internals(german)</h2><h3>Architektur</h3><h4>Thunderbird-Addon</h4><p>Der Quelltext des Addons ist im 'src'-Verzeichnis abgelegt.</p>
+<h5>JavaScript-Module</h5><p>Eine Sammlung an JavaScript-Modulen ist in der Datei <em>src/chrome/content/ui/js/modules.js</em> abgelegt.
+Die Dokumentation zu den Modulen kann über <em>/docs/js-modules/index.html</em> aufgerufen werden.
+Folgende weitere Module befinden sich außerhalb der modules.js:</p>
+<ul>
+<li><strong>vvv-account-manager.js:</strong> Speichert zu welchen Accounts Schlüssel oder Zertifikate hochgeladen wurden.</li>
+<li><strong>vvv-key-cache.js:</strong> Speichert das Ergebnis der Schlüsselsuche für eine Stunde und aktualisiert Sie wenn notwendig.</li>
+<li><strong>vvv-key-lookup.js:</strong> Validiert Email-Adressen im Composer-fenster und sendet diese an das iFrame für die Schlüsselsuche weiter.</li>
+<li><strong>vvv-key-lookup-iframe.js:</strong> Verwendet vvv-key-cache &amp; modules.js für die Schlüsselsuche und Aktualisierung.</li>
+<li><strong>vvv-key-upload.js:</strong> Enthält Funktionen für den Upload von PGP-Schlüsseln an den OXGuard</li>
+<li><strong>vvv-overlay.js:</strong> wird durch main-window.xul eingebunden.</li>
+<li><strong>vvv-templateloader.js:</strong> Enthält Funktionen zum Laden von Mustache-Templates(HTML-Templates).</li>
+</ul>
+<h5>Overlays/Anpassung der TB-Oberfläche</h5><p>Unter <em>src/chrome/content</em> sind die XUL-Dateien zur Anpassung der Oberfläche abgelegt.</p>
+<ul>
+<li><strong>main-window.xul:</strong> bindet den VVV-Button in die Toolbar ein<ul>
+<li>Bei einem Klick auf den Button wird ein neuer Tab mit der VVV-Schlüsselverwaltung geöffnet.</li>
+</ul>
+</li>
+<li><strong>vvv-key-lookup.xul:</strong> bindet das iFrame für die Schlüsselsuche in das &quot;Composer&quot;-Fenster ein.<ul>
+<li>Ein eingebundenes Skript sendet die eingegebenen Empfänger an den iFrame weiter.</li>
+<li>Im iFrame wird die eigentliche Schlüsselsuche angestoßen</li>
+</ul>
+</li>
+</ul>
+<h5>Schlüsselsuche</h5><h6>Komponenten</h6><p>Folgende Komponenten sind an der Schlüsselsuche beteiligt:</p>
+<ul>
+<li>vvv-key-cache</li>
+<li>ldap_tool</li>
+<li>SecureFetch</li>
+<li>modules.js</li>
+</ul>
+<h5>ldap_tool</h5><p>Das ldap_tool fügt Zertifikate zu einem Nutzer auf einem LDAP-Server hinzu oder löscht diese.
+Die von ldap_tool gesendeten Anfragen überprüfen das Server-Zertifikat mit einem zuvor über SecureFetch geladenen Zertfikat.
+Das über SecureFetch geladene Zertifikat wird vor der lokalen Speicherung mittels DNSSEC &amp; DANE überprüft.</p>
+<p>Aufgaben:</p>
+<ul>
+<li>Hochladen von Zertifikaten auf einen LDAP-Server</li>
+<li>Löschen eines Zertifikats am LDAP-Server</li>
+<li>Verifizierung der TLS-Verbindung mit Hilfe eines lokalen, zuvor geprüften Zertifikats.</li>
+</ul>
+<h5>SecureFetch</h5><p>SecureFetch dient zur Validierung von TLSA/DANE/DNSSEC Einträgen an einem DNS-Server.
+Zusätzlich kann es validierte HTTPS(HTTP 1 &amp; 1.1) Anfragen senden und die Antworten auswerten.</p>
+<p>Aufgaben:</p>
+<ul>
+<li>Abruf von DNSSEC-gesicherten DNS-Einträgen</li>
+<li>Validierung &amp; Lokale Speicherung von Zertifikaten(DNSSEC/DANE)</li>
+<li>DANE-gesicherte HTTPS-Anfragen</li>
+</ul>
+<h5>VVV-Key-Cache</h5><p>Der VVV-Key-Cache speichert für eine Stunde folgende Informationen zu einer Schlüsselsuche:</p>
+<ul>
+<li>Zeitstempel der Suche</li>
+<li>Empfänger-Email</li>
+<li>Schlüssel-Typ: VVV, Lokal, Kein Schlüssel</li>
+<li>Hash: SHA256-Hash des Schlüssels oder Zertifikats, falls gefunden.</li>
+</ul>
+<h4>Ablauf</h4><ul>
+<li>Prüfung ob Schlüssel/Zertifikat-Information im Cache ist und (zeitlich) gültig ist<ul>
+<li>Falls ja:<ul>
+<li>direkte Rückgabe der Information</li>
+<li>Ende</li>
+</ul>
+</li>
+<li>sonst:<ul>
+<li>weiter</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Suche nach VVV-PGP-Schlüsseln und VVV-Zertifikaten<ul>
+<li>Falls gefunden:<ul>
+<li>Import in GPG/Thunderbird</li>
+<li>Anlegen/Aktualisieren des Eintrags im Cache</li>
+<li>Ende</li>
+</ul>
+</li>
+<li>sonst: weiter</li>
+</ul>
+</li>
+<li>Suche nach lokalen Schlüsseln und Zertifikaten<ul>
+<li>Falls gefunden:<ul>
+<li>Anlegen/Aktualisieren des Eintrags im Cache</li>
+<li>Ende</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Anlegen eines Eintrags im Cache: Kein Schlüssel oder Zertifikat</li>
+</ul>
+<hr>
+<h2>Build native dependencies with msys2 for Windows</h2><h2>Setup Development Environment</h2><p>Follow the following guide to install msys2, gcc &amp; make:</p>
+<p>https://github.com/orlp/dev-on-windows/wiki/Installing-GCC--&amp;-MSYS2</p>
+<h2>Install dependencies with pacman</h2><h3>Openssl-devel 1.0.2k</h3><p>Be sure to install the 1.0.x version of openssl!</p>
+<pre class="prettyprint source"><code>    pacman -S openssl-devel</code></pre><h3>libexpat</h3><pre class="prettyprint source"><code>    pacman -S libexpat-devel</code></pre><h3>flex</h3><p>Be sure to install a version lower or higher than 2.6.3 because of a bug in that version!</p>
+<pre class="prettyprint source"><code>    wget http://repo.msys2.org/msys/x86_64/flex-2.6.1-1-x86_64.pkg.tar.xz
+
+  pacman -U flex-2.6.1-1-x86_64.pkg.tar.xz</code></pre><h2>Build Libraries</h2><h3>Important Build Notes</h3><h4>Downloading PKGBUILD files</h4><p>To get the PKGBUILD files you need you can download or clone the following repository:</p>
+<p>https://github.com/Alexpux/MINGW-packages</p>
+<p>After the download you should copy the directories for the needed packages to your msys home directory &quot;home/your_username&quot;.</p>
+<h4>Fix PKGBUILD files</h4><p>Most PKGBUILD files in the msys2 repository are out-of-date.
+Because of that you need fix the SHA256-sums inside these files using openssl and a text-editor:</p>
+<pre class="prettyprint source"><code>    openssl dgst -sha256 ./the_file_to_hash</code></pre><h3>Build &amp; install LDNS</h3><p>Copy the mingw-w64-ldns directory to your home directory and enter it. After that Compile and install it with the following commands:</p>
+<pre class="prettyprint source"><code>    MINGW_INSTALLS=mingw64 makepkg-mingw -sLf
+
+    pacman -U mingw-w64-x86_64-ldns-1.6.17-4-any.pkg.tar.xz
+
+    cd ..</code></pre><h3>Build and install LibUnbound</h3><p>Copy the mingw-w64-unbound directory to your home directory and enter it. After that Compile and install it with the following commands:</p>
+<pre class="prettyprint source"><code>    cd mingw-w64-unbound/
+
+    MINGW_INSTALLS=mingw64 makepkg-mingw -sLf
+
+    pacman -U mingw-w64-x86_64-unbound-1.5.10-1-any.pkg.tar.xz</code></pre><h2>Using the libraries in your own projects</h2><p><strong>Add the following headers to use the libraries:</strong></p>
+<pre class="prettyprint source"><code>    #include &lt;stdio.h>    /* for printf */
+    #include &lt;ws2tcpip.h>
+    #include &lt;unbound.h>    /* unbound API - BSD-LICENSE*/
+    #include &lt;stdbool.h> /* bool */
+    #include &lt;ldns/ldns.h> /* BSD-LICENSE*/
+    #include &lt;ldns/rdata.h>
+    #include &lt;math.h>
+    #include &lt;string.h></code></pre><p><strong>Compiling own sources:</strong></p>
+<pre class="prettyprint source"><code>    mkdir build
+    cd ./build
+    cmake -G &quot;MSYS Makefiles&quot; ..
+    make</code></pre></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AccountManager.html">AccountManager</a></li><li><a href="module-CommonUtils.html">CommonUtils</a></li><li><a href="module-GPGIPC.html">GPGIPC</a></li><li><a href="module-HKPS.html">HKPS</a></li><li><a href="module-KeyManager.html">KeyManager</a></li><li><a href="module-Logger.html">Logger</a></li></ul><h3>Classes</h3><ul><li><a href="module-HKPS-AccountKeyInfo.html">AccountKeyInfo</a></li><li><a href="module-HKPS-KeyInfo.html">KeyInfo</a></li><li><a href="module-HKPS-RecipientKeyInfo.html">RecipientKeyInfo</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed May 02 2018 12:50:07 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,1848 @@
+﻿<!DOCTYPE html>
+
+<!--
+Keys4All Thunderbird-Addon
+Designed and developed by
+Fraunhofer Institute for Secure Information Technology SIT
+<https://www.sit.fraunhofer.de>
+(C) Copyright FhG SIT, 2018
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<html>
+<head>
+<meta charset="utf-8" />
+
+
+
+<!-- ================================================================== -->
+<!--                   templateStart                                    -->
+<!-- ================================================================== -->
+<script id="templateStart" type="text/x-handlebars-template">
+<div class="container">
+	<div class="medskip">&nbsp;</div>
+	<div class="medskip">&nbsp;</div>
+	<div>
+		<span class="small-title">Herzlich Willkommen!</span>
+	</div>
+	<div class="medskip">&nbsp;</div>
+	<div class="medskip">&nbsp;</div>
+
+	<div class="row row-eq-height">
+		<div class="col-lg-8">
+				<div class="row tile tile-large font-black">
+
+					<div class="col-lg-offset-2 col-lg-10 col-lg-offset-1">
+						<div class="medskip">&nbsp;</div>
+						<div width="150px">
+						<a align="right" class="link-keys4all" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-pub-key-button', 'info-certificate-button', 'info-enc-email-button', 'collapse-pub-key', 'collapse-certificate', 'collapse-enc-email');"><img src="img/button-info.png"/></a>
+						</div>
+						</br>
+						<span class="small-title">Einfacher E-Mails verschlüsseln mit Keys4all:</span>
+						<div class="medskip">&nbsp;</div>
+						Keys4all ermittelt die <a class="link-keys4all" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-pub-key-button', 'info-certificate-button', 'info-enc-email-button', 'collapse-pub-key', 'collapse-certificate', 'collapse-enc-email');">öffentlichen Schlüssel</a> oder <a class="link-keys4all" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-certificate-button', 'info-pub-key-button', 'info-enc-email-button', 'collapse-certificate', 'collapse-pub-key', 'collapse-enc-email');">Zertifikate</a> deiner Kontakte, die du zum Versenden verschlüsselter E-Mails benötigst.
+						<div class="medskip">&nbsp;</div>
+						Damit Deine Freunde auch an dich <a class="link-keys4all" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-enc-email-button', 'info-pub-key-button', 'info-certificate-button', 'collapse-enc-email', 'collapse-pub-key', 'collapse-certificate');">verschlüsselte E-Mails</a> senden können, stelle Deinen öffentlichen Schlüssel zur Verfügung.
+						<div class="medskip">&nbsp;</div>
+						<center><img src="img/startseite.png"/></center>
+						<div class="medskip">&nbsp;</div>
+						<center><button class="btn btn-default btn-keys4all " onclick="showSelectKeysPage();"  role="button">Schlüssel zur Verfügung stellen</button></center>
+						<div class="medskip">&nbsp;</div>
+						<div class="medskip">&nbsp;</div>
+					</div>
+
+				</div>
+
+		</div>
+		<div class="col-lg-offset-1 col-lg-3">
+				<div class="row tile tile-small">
+					<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+						<div class="medskip">&nbsp;</div>
+						<span class="font-yellow-large">Wie verschicke ich eine verschlüsselte E-Mail?</span>
+						<div class="medskip">&nbsp;</div>
+						<div class="medskip">&nbsp;</div>
+					</div>
+				</div>
+				<div class="medskip">&nbsp;</div>
+				<div class="medskip">&nbsp;</div>
+				<div class="row tile tile-small">
+					<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+						<div class="medskip">&nbsp;</div>
+						<span class="font-yellow-large">Was macht Keys4all?</span>
+						<div class="medskip">&nbsp;</div>
+						<div class="medskip">&nbsp;</div>
+					</div>
+				</div>
+				<div class="medskip">&nbsp;</div>
+				<div class="medskip">&nbsp;</div>
+				<div class="row tile tile-small" align="bottom">
+					<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+						<div class="medskip">&nbsp;</div>
+						<span class="font-yellow-large">Wie veröffentliche ich meinen öffentlichen Schlüssel?</span>
+						<div class="medskip">&nbsp;</div>
+						<div class="medskip">&nbsp;</div>
+					</div>
+				</div>
+		</div>
+	</div>
+
+</div> <!-- container -->
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<!-- ================================================================== -->
+<!--                   templateAbout                                    -->
+<!-- ================================================================== -->
+<script id="templateAbout" type="text/x-handlebars-template">
+<div class="container">
+	<h1>Über Keys4all</h1>
+	Das Keys4all-Addon für Thunderbird erlaubt das Veröffentlichen des zur eigenen E-Mail-Adresse gehörenden <br>
+	öffentlichen PGP-Schlüssels bzw. S/MIME-Zertifikats auf einem Schlüsselserver bzw. <br>
+	LDAP-Server des E-Mail-Providers.<br><br>
+	Webseite:  <a href="https://Keys4All.de">https://Keys4All.de</a> <br>
+
+
+	<h2>Lizenz</h2>
+	<span style="font-weight:bold">Keys4All Thunderbird-Addon</span><br>
+	<br>Designed and developed by
+	<br>Fraunhofer Institute for Secure Information Technology SIT
+	<br><a href="https://www.sit.fraunhofer.de">https://www.sit.fraunhofer.de</a><br>
+	<br>(C) Copyright FhG SIT, 2018
+	<br>
+	<br>This program is free software: you can redistribute it and/or modify
+	<br>it under the terms of the GNU General Public License as published by
+	<br>the Free Software Foundation, either version 3 of the License, or
+	<br>(at your option) any later version.
+
+	<br>This program is distributed in the hope that it will be useful,
+	<br>but WITHOUT ANY WARRANTY; without even the implied warranty of
+	<br>MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	<br>GNU General Public License for more details.
+	<br>
+	<br>You should have received a copy of the GNU General Public License
+	<br>along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+	<br>
+
+
+
+
+	<h2>Lizenzen der verwendeten Bibliotheken</h2>
+
+<span style="font-weight:bold">Twitter Bootstrap 3</span><br>
+<br><a href="https://github.com/twbs/bootstrap/blob/master/LICENSE">https://github.com/twbs/bootstrap/blob/master/LICENSE</a><br>
+<span class="text-licence">
+<br>
+<br>	The MIT License (MIT)
+<br>
+<br>	Copyright (c) 2011-2016 Twitter, Inc.
+<br>
+<br>	Permission is hereby granted, free of charge, to any person obtaining a copy
+<br>	of this software and associated documentation files (the "Software"), to deal
+<br>	in the Software without restriction, including without limitation the rights
+<br>	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+<br>	copies of the Software, and to permit persons to whom the Software is
+<br>	furnished to do so, subject to the following conditions:
+<br>
+<br>	The above copyright notice and this permission notice shall be included in
+<br>	all copies or substantial portions of the Software.
+<br>
+<br>	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+<br>	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+<br>	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+<br>	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+<br>	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+<br>	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+<br>	THE SOFTWARE.
+<br>
+</span>
+
+<br><span style="font-weight:bold">handlebars.js</span><br>
+<br><a href="https://github.com/wycats/handlebars.js/blob/master/LICENSE">https://github.com/wycats/handlebars.js/blob/master/LICENSE</a><br>
+<br>
+<span class="text-licence">
+<br>	Copyright (C) 2011-2017 by Yehuda Katz
+<br>
+<br>	Permission is hereby granted, free of charge, to any person obtaining a copy
+<br>	of this software and associated documentation files (the "Software"), to deal
+<br>	in the Software without restriction, including without limitation the rights
+<br>	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+<br>	copies of the Software, and to permit persons to whom the Software is
+<br>	furnished to do so, subject to the following conditions:
+<br>
+<br>	The above copyright notice and this permission notice shall be included in
+<br>	all copies or substantial portions of the Software.
+<br>
+<br>	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+<br>	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+<br>	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+<br>	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+<br>	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+<br>	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+<br>	THE SOFTWARE.
+<br>
+</span>
+
+<br><span style="font-weight:bold">jquery.mustache</span><br>
+<br><a href="https://github.com/jonnyreeves/jquery-Mustache/blob/master/MIT-LICENSE.txt">https://github.com/jonnyreeves/jquery-Mustache/blob/master/MIT-LICENSE.txt</a><br>
+<br>
+<span class="text-licence">
+<br>Copyright (c) 2012 Jonny Reeves, <a href="http://jonnyreeves.co.uk/">http://jonnyreeves.co.uk/</a>
+<br>
+<br>Permission is hereby granted, free of charge, to any person obtaining
+<br>a copy of this software and associated documentation files (the
+<br>"Software"), to deal in the Software without restriction, including
+<br>without limitation the rights to use, copy, modify, merge, publish,
+<br>distribute, sublicense, and/or sell copies of the Software, and to
+<br>permit persons to whom the Software is furnished to do so, subject to
+<br>the following conditions:
+<br>
+<br>The above copyright notice and this permission notice shall be
+<br>included in all copies or substantial portions of the Software.
+<br>
+<br>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+<br>EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+<br>MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+<br>NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+<br>LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+<br>OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+<br>WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+<br>
+</span>
+
+<br><span style="font-weight:bold">jquery2</span><br>
+<br><a href="https://github.com/jquery/jquery/blob/master/LICENSE.txt">https://github.com/jquery/jquery/blob/master/LICENSE.txt</a><br>
+<br>
+<span class="text-licence">
+<br>Copyright JS Foundation and other contributors, <a href="https://js.foundation/">https://js.foundation/</a>
+<br>
+<br>This software consists of voluntary contributions made by many
+<br>individuals. For exact contribution history, see the revision history
+<br>available at <a href="https://github.com/jquery/jquery">https://github.com/jquery/jquery</a>
+<br>
+<br>The following license applies to all parts of this software except as
+<br>documented below:
+<br>
+<br>====
+<br>
+<br>Permission is hereby granted, free of charge, to any person obtaining
+<br>a copy of this software and associated documentation files (the
+<br>"Software"), to deal in the Software without restriction, including
+<br>without limitation the rights to use, copy, modify, merge, publish,
+<br>distribute, sublicense, and/or sell copies of the Software, and to
+<br>permit persons to whom the Software is furnished to do so, subject to
+<br>the following conditions:
+<br>
+<br>The above copyright notice and this permission notice shall be
+<br>included in all copies or substantial portions of the Software.
+<br>
+<br>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+<br>EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+<br>MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+<br>NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+<br>LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+<br>OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+<br>WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+<br>
+<br>====
+<br>
+<br>All files located in the node_modules and external directories are
+<br>externally maintained libraries used by this software which have their
+<br>own licenses; we recommend you read them, as their terms may differ from
+<br>the terms above.
+<br>
+</span>
+
+<br><span style="font-weight:bold">mustache.js</span><br>
+<br><a href="https://github.com/janl/mustache.js/blob/master/LICENSE">https://github.com/janl/mustache.js/blob/master/LICENSE</a><br>
+<br>
+<span class="text-licence">
+<br>The MIT License
+<br>
+<br>Copyright (c) 2009 Chris Wanstrath (Ruby)
+<br>Copyright (c) 2010-2014 Jan Lehnardt (JavaScript)
+<br>Copyright (c) 2010-2015 The mustache.js community
+<br>
+<br>Permission is hereby granted, free of charge, to any person obtaining a 
+<br>copy of this software and associated documentation files (the "Software"), 
+<br>to deal in the Software without restriction, including without limitation 
+<br>the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+<br>and/or sell copies of the Software, and to permit persons to whom the Software 
+<br>is furnished to do so, subject to the following conditions:
+<br>
+<br>The above copyright notice and this permission notice shall be included in 
+<br>all copies or substantial portions of the Software.
+<br>
+<br>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+<br>IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+<br>FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+<br>THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+<br>LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+<br>OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+<br>
+</span>
+
+<br><span style="font-weight:bold">openpgp.js</span><br>
+<br><a href="https://github.com/openpgpjs/openpgpjs/blob/master/LICENSE">https://github.com/openpgpjs/openpgpjs/blob/master/LICENSE</a><br>
+<br>
+<span class="text-licence">
+<br>GNU LESSER GENERAL PUBLIC LICENSE
+<br>		Version 3, 29 June 2007
+<br>
+<br>Copyright (C) 2007 Free Software Foundation, Inc.
+<br>Everyone is permitted to copy and distribute verbatim copies
+<br>of this license document, but changing it is not allowed.
+<br>
+<br>
+<br>This version of the GNU Lesser General Public License incorporates
+<br>the terms and conditions of version 3 of the GNU General Public
+<br>License, supplemented by the additional permissions listed below.
+<br>
+<br>0. Additional Definitions.
+<br>
+<br>As used herein, "this License" refers to version 3 of the GNU Lesser
+<br>General Public License, and the "GNU GPL" refers to version 3 of the GNU
+<br>General Public License.
+<br>
+<br>"The Library" refers to a covered work governed by this License,
+<br>other than an Application or a Combined Work as defined below.
+<br>
+<br>An "Application" is any work that makes use of an interface provided
+<br>by the Library, but which is not otherwise based on the Library.
+<br>Defining a subclass of a class defined by the Library is deemed a mode
+<br>of using an interface provided by the Library.
+<br>
+<br>A "Combined Work" is a work produced by combining or linking an
+<br>Application with the Library.  The particular version of the Library
+<br>with which the Combined Work was made is also called the "Linked
+<br>Version".
+<br>
+<br>The "Minimal Corresponding Source" for a Combined Work means the
+<br>Corresponding Source for the Combined Work, excluding any source code
+<br>for portions of the Combined Work that, considered in isolation, are
+<br>based on the Application, and not on the Linked Version.
+<br>
+<br>The "Corresponding Application Code" for a Combined Work means the
+<br>object code and/or source code for the Application, including any data
+<br>and utility programs needed for reproducing the Combined Work from the
+<br>Application, but excluding the System Libraries of the Combined Work.
+<br>
+<br>1. Exception to Section 3 of the GNU GPL.
+<br>
+<br>You may convey a covered work under sections 3 and 4 of this License
+<br>without being bound by section 3 of the GNU GPL.
+<br>
+<br>2. Conveying Modified Versions.
+<br>
+<br>If you modify a copy of the Library, and, in your modifications, a
+<br>facility refers to a function or data to be supplied by an Application
+<br>that uses the facility (other than as an argument passed when the
+<br>facility is invoked), then you may convey a copy of the modified
+<br>version:
+<br>
+<br>a) under this License, provided that you make a good faith effort to
+<br>ensure that, in the event an Application does not supply the
+<br>function or data, the facility still operates, and performs
+<br>whatever part of its purpose remains meaningful, or
+<br>
+<br>b) under the GNU GPL, with none of the additional permissions of
+<br>this License applicable to that copy.
+<br>
+<br>3. Object Code Incorporating Material from Library Header Files.
+<br>
+<br>The object code form of an Application may incorporate material from
+<br>a header file that is part of the Library.  You may convey such object
+<br>code under terms of your choice, provided that, if the incorporated
+<br>material is not limited to numerical parameters, data structure
+<br>layouts and accessors, or small macros, inline functions and templates
+<br>(ten or fewer lines in length), you do both of the following:
+<br>
+<br>a) Give prominent notice with each copy of the object code that the
+<br>Library is used in it and that the Library and its use are
+<br>covered by this License.
+<br>
+<br>b) Accompany the object code with a copy of the GNU GPL and this license
+<br>document.
+<br>
+<br>4. Combined Works.
+<br>
+<br>You may convey a Combined Work under terms of your choice that,
+<br>taken together, effectively do not restrict modification of the
+<br>portions of the Library contained in the Combined Work and reverse
+<br>engineering for debugging such modifications, if you also do each of
+<br>the following:
+<br>
+<br>a) Give prominent notice with each copy of the Combined Work that
+<br>the Library is used in it and that the Library and its use are
+<br>covered by this License.
+<br>
+<br>b) Accompany the Combined Work with a copy of the GNU GPL and this license
+<br>document.
+<br>
+<br>c) For a Combined Work that displays copyright notices during
+<br>execution, include the copyright notice for the Library among
+<br>these notices, as well as a reference directing the user to the
+<br>copies of the GNU GPL and this license document.
+<br>
+<br>d) Do one of the following:
+<br>
+<br>0) Convey the Minimal Corresponding Source under the terms of this
+<br>License, and the Corresponding Application Code in a form
+<br>suitable for, and under terms that permit, the user to
+<br>recombine or relink the Application with a modified version of
+<br>the Linked Version to produce a modified Combined Work, in the
+<br>manner specified by section 6 of the GNU GPL for conveying
+<br>Corresponding Source.
+<br>
+<br>1) Use a suitable shared library mechanism for linking with the
+<br>Library.  A suitable mechanism is one that (a) uses at run time
+<br>a copy of the Library already present on the user's computer
+<br>system, and (b) will operate properly with a modified version
+<br>of the Library that is interface-compatible with the Linked
+<br>Version.
+<br>
+<br>e) Provide Installation Information, but only if you would otherwise
+<br>be required to provide such information under section 6 of the
+<br>GNU GPL, and only to the extent that such information is
+<br>necessary to install and execute a modified version of the
+<br>Combined Work produced by recombining or relinking the
+<br>Application with a modified version of the Linked Version. (If
+<br>you use option 4d0, the Installation Information must accompany
+<br>the Minimal Corresponding Source and Corresponding Application
+<br>Code. If you use option 4d1, you must provide the Installation
+<br>Information in the manner specified by section 6 of the GNU GPL
+<br>for conveying Corresponding Source.)
+<br>
+<br>5. Combined Libraries.
+<br>
+<br>You may place library facilities that are a work based on the
+<br>Library side by side in a single library together with other library
+<br>facilities that are not Applications and are not covered by this
+<br>License, and convey such a combined library under terms of your
+<br>choice, if you do both of the following:
+<br>
+<br>a) Accompany the combined library with a copy of the same work based
+<br>on the Library, uncombined with any other library facilities,
+<br>conveyed under the terms of this License.
+<br>
+<br>b) Give prominent notice with the combined library that part of it
+<br>is a work based on the Library, and explaining where to find the
+<br>accompanying uncombined form of the same work.
+<br>
+<br>6. Revised Versions of the GNU Lesser General Public License.
+<br>
+<br>The Free Software Foundation may publish revised and/or new versions
+<br>of the GNU Lesser General Public License from time to time. Such new
+<br>versions will be similar in spirit to the present version, but may
+<br>differ in detail to address new problems or concerns.
+<br>
+<br>Each version is given a distinguishing version number. If the
+<br>Library as you received it specifies that a certain numbered version
+<br>of the GNU Lesser General Public License "or any later version"
+<br>applies to it, you have the option of following the terms and
+<br>conditions either of that published version or of any later version
+<br>published by the Free Software Foundation. If the Library as you
+<br>received it does not specify a version number of the GNU Lesser
+<br>General Public License, you may choose any version of the GNU Lesser
+<br>General Public License ever published by the Free Software Foundation.
+<br>
+<br>If the Library as you received it specifies that a proxy can decide
+<br>whether future versions of the GNU Lesser General Public License shall
+<br>apply, that proxy's public statement of acceptance of any version is
+<br>permanent authorization for you to choose that version for the
+<br>Library.
+<br>
+</span>
+
+<br><span style="font-weight:bold">subprocess.jsm</span><br>
+<br><a href="https://github.com/bit/subprocess/blob/master/subprocess.jsm">https://github.com/bit/subprocess/blob/master/subprocess.jsm</a><br>
+<br>
+<span class="text-licence">
+<br>/* ***** BEGIN LICENSE BLOCK *****
+<br> * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+<br> *
+<br> * The contents of this file are subject to the Mozilla Public
+<br> * License Version 1.1 (the "MPL"); you may not use this file
+<br> * except in compliance with the MPL. You may obtain a copy of
+<br> * the MPL at <a href="http://www.mozilla.org/MPL/">http://www.mozilla.org/MPL/</a>
+<br> *
+<br> * Software distributed under the MPL is distributed on an "AS
+<br> * IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+<br> * implied. See the MPL for the specific language governing
+<br> * rights and limitations under the MPL.
+<br> *
+<br> * The Original Code is subprocess.jsm.
+<br> *
+<br> * The Initial Developer of this code is Jan Gerber.
+<br> * Portions created by Jan Gerber &lt;j@mailb.org&gt;
+<br> * are Copyright (C) 2011 Jan Gerber.
+<br> * All Rights Reserved.
+<br> *
+<br> * Contributor(s):
+<br> * Patrick Brunschwig &lt;patrick@enigmail.net&gt;
+<br> *
+<br> * Alternatively, the contents of this file may be used under the terms of
+<br> * either the GNU General Public License Version 2 or later (the "GPL"), or
+<br> * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+<br> * in which case the provisions of the GPL or the LGPL are applicable instead
+<br> * of those above. If you wish to allow use of your version of this file only
+<br> * under the terms of either the GPL or the LGPL, and not to allow others to
+<br> * use your version of this file under the terms of the MPL, indicate your
+<br> * decision by deleting the provisions above and replace them with the notice
+<br> * and other provisions required by the GPL or the LGPL. If you do not delete
+<br> * the provisions above, a recipient may use your version of this file under
+<br> * the terms of any one of the MPL, the GPL or the LGPL.
+<br> * ***** END LICENSE BLOCK ***** */
+<br>
+</span>
+
+<br><span style="font-weight:bold">Js-sha256</span><br>
+<br><a href="https://github.com/emn178/js-sha256/blob/master/LICENSE.txt">https://github.com/emn178/js-sha256/blob/master/LICENSE.txt</a><br>
+<br>
+<span class="text-licence">
+<br>Copyright (c) 2014-2017 Chen, Yi-Cyuan
+<br>
+<br>MIT License
+<br>
+<br>Permission is hereby granted, free of charge, to any person obtaining
+<br>a copy of this software and associated documentation files (the
+<br>"Software"), to deal in the Software without restriction, including
+<br>without limitation the rights to use, copy, modify, merge, publish,
+<br>distribute, sublicense, and/or sell copies of the Software, and to
+<br>permit persons to whom the Software is furnished to do so, subject to
+<br>the following conditions:
+<br>
+<br>The above copyright notice and this permission notice shall be
+<br>included in all copies or substantial portions of the Software.
+<br>
+<br>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+<br>EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+<br>MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+<br>NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+<br>LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+<br>OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+<br>WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+<br>
+</span>
+
+
+<br><span style="font-weight:bold">libUnbound</span><br>
+<br><a href="http://unbound.nlnetlabs.nl/svn/trunk/LICENSE">http://unbound.nlnetlabs.nl/svn/trunk/LICENSE</a><br>
+<br>
+<span class="text-licence">
+<br>Copyright (c) 2007, NLnet Labs. All rights reserved.
+<br>
+<br>This software is open source.
+<br>
+<br>Redistribution and use in source and binary forms, with or without
+<br>modification, are permitted provided that the following conditions
+<br>are met:
+<br>
+<br>Redistributions of source code must retain the above copyright notice,
+<br>this list of conditions and the following disclaimer.
+<br>
+<br>Redistributions in binary form must reproduce the above copyright notice,
+<br>this list of conditions and the following disclaimer in the documentation
+<br>and/or other materials provided with the distribution.
+<br>
+<br>Neither the name of the NLNET LABS nor the names of its contributors may
+<br>be used to endorse or promote products derived from this software without
+<br>specific prior written permission.
+<br>
+<br>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<br>"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<br>LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<br>A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<br>HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<br>SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+<br>TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+<br>PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+<br>LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+<br>NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+<br>SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<br>
+</span>
+
+
+<br><span style="font-weight:bold">ldns</span><br>
+<br>
+<span class="text-licence">
+        Copyright (c) 2005,2006, NLnetLabs<br>
+<br>	All rights reserved.
+<br>
+<br>	Redistribution and use in source and binary forms, with or without
+<br>	modification, are permitted provided that the following conditions are met:
+<br>
+<br>	  * Redistributions of source code must retain the above copyright notice,
+<br>	    this list of conditions and the following disclaimer.
+<br>	  * Redistributions in binary form must reproduce the above copyright
+<br>	    notice, this list of conditions and the following disclaimer in the
+<br>	    documentation and/or other materials provided with the distribution.
+<br>	  * Neither the name of NLnetLabs nor the names of its
+<br>	    contributors may be used to endorse or promote products derived from this
+<br>	    software without specific prior written permission.
+<br>
+<br>	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+<br>	AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+<br>	IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+<br>	ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+<br>	LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+<br>	CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+<br>	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+<br>	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+<br>	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+<br>	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+<br>	POSSIBILITY OF SUCH DAMAGE.
+<br>
+</span>
+
+
+<br><span style="font-weight:bold">openssl</span><br>
+<br><a href="https://github.com/openssl/openssl/blob/master/LICENSE">https://github.com/openssl/openssl/blob/master/LICENSE</a><br>
+<br>
+<span class="text-licence">
+ LICENSE ISSUES<br>
+ ==============<br>
+<br>
+ The OpenSSL toolkit stays under a double license, i.e. both the conditions of<br>
+ the OpenSSL License and the original SSLeay license apply to the toolkit.<br>
+ See below for the actual license texts.<br>
+<br>
+ OpenSSL License<br>
+ ---------------<br>
+<br>
+/* ====================================================================<br>
+ * Copyright (c) 1998-2018 The OpenSSL Project. All rights reserved.<br>
+ *<br>
+ * Redistribution and use in source and binary forms, with or without<br>
+ * modification, are permitted provided that the following conditions<br>
+ * are met:<br>
+ *<br>
+ * 1. Redistributions of source code must retain the above copyright<br>
+ * notice, this list of conditions and the following disclaimer. <br>
+ *<br>
+ * 2. Redistributions in binary form must reproduce the above copyright<br>
+ * notice, this list of conditions and the following disclaimer in<br>
+ * the documentation and/or other materials provided with the<br>
+ * distribution.<br>
+ *<br>
+ * 3. All advertising materials mentioning features or use of this<br>
+ * software must display the following acknowledgment:<br>
+ * &quot;This product includes software developed by the OpenSSL Project<br>
+ * for use in the OpenSSL Toolkit. (<a href="http://www.openssl.org/">http://www.openssl.org/</a>)&quot;<br>
+ *<br>
+ * 4. The names &quot;OpenSSL Toolkit&quot; and &quot;OpenSSL Project&quot; must not be used to<br>
+ * endorse or promote products derived from this software without<br>
+ * prior written permission. For written permission, please contact<br>
+ * openssl-core@openssl.org.<br>
+ *<br>
+ * 5. Products derived from this software may not be called &quot;OpenSSL&quot;<br>
+ * nor may &quot;OpenSSL&quot; appear in their names without prior written<br>
+ * permission of the OpenSSL Project.<br>
+ *<br>
+ * 6. Redistributions of any form whatsoever must retain the following<br>
+ * acknowledgment:<br>
+ * &quot;This product includes software developed by the OpenSSL Project<br>
+ * for use in the OpenSSL Toolkit (<a href="http://www.openssl.org/">http://www.openssl.org/</a>)&quot;<br>
+ *<br>
+ * THIS SOFTWARE IS PROVIDED BY THE OpenSSL PROJECT &#96;&#96;AS IS'' AND ANY<br>
+ * EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<br>
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR<br>
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE OpenSSL PROJECT OR<br>
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,<br>
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT<br>
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;<br>
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)<br>
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,<br>
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<br>
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED<br>
+ * OF THE POSSIBILITY OF SUCH DAMAGE.<br>
+ * ====================================================================<br>
+ *<br>
+ * This product includes cryptographic software written by Eric Young<br>
+ * (eay@cryptsoft.com). This product includes software written by Tim<br>
+ * Hudson (tjh@cryptsoft.com).<br>
+ *<br>
+ */<br>
+<br>
+ Original SSLeay License<br>
+ -----------------------<br>
+<br>
+/* Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)<br>
+ * All rights reserved.<br>
+ *<br>
+ * This package is an SSL implementation written<br>
+ * by Eric Young (eay@cryptsoft.com).<br>
+ * The implementation was written so as to conform with Netscapes SSL.<br>
+ * <br>
+ * This library is free for commercial and non-commercial use as long as<br>
+ * the following conditions are aheared to. The following conditions<br>
+ * apply to all code found in this distribution, be it the RC4, RSA,<br>
+ * lhash, DES, etc., code; not just the SSL code. The SSL documentation<br>
+ * included with this distribution is covered by the same copyright terms<br>
+ * except that the holder is Tim Hudson (tjh@cryptsoft.com).<br>
+ * <br>
+ * Copyright remains Eric Young's, and as such any Copyright notices in<br>
+ * the code are not to be removed.<br>
+ * If this package is used in a product, Eric Young should be given attribution<br>
+ * as the author of the parts of the library used.<br>
+ * This can be in the form of a textual message at program startup or<br>
+ * in documentation (online or textual) provided with the package.<br>
+ * <br>
+ * Redistribution and use in source and binary forms, with or without<br>
+ * modification, are permitted provided that the following conditions<br>
+ * are met:<br>
+ * 1. Redistributions of source code must retain the copyright<br>
+ * notice, this list of conditions and the following disclaimer.<br>
+ * 2. Redistributions in binary form must reproduce the above copyright<br>
+ * notice, this list of conditions and the following disclaimer in the<br>
+ * documentation and/or other materials provided with the distribution.<br>
+ * 3. All advertising materials mentioning features or use of this software<br>
+ * must display the following acknowledgement:<br>
+ * &quot;This product includes cryptographic software written by<br>
+ * Eric Young (eay@cryptsoft.com)&quot;<br>
+ * The word 'cryptographic' can be left out if the rouines from the library<br>
+ * being used are not cryptographic related :-).<br>
+ * 4. If you include any Windows specific code (or a derivative thereof) from <br>
+ * the apps directory (application code) you must include an acknowledgement:<br>
+ * &quot;This product includes software written by Tim Hudson (tjh@cryptsoft.com)&quot;<br>
+ * <br>
+ * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG &#96;&#96;AS IS'' AND<br>
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<br>
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<br>
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE<br>
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL<br>
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS<br>
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)<br>
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT<br>
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY<br>
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF<br>
+ * SUCH DAMAGE.<br>
+ * <br>
+ * The licence and distribution terms for any publically available version or<br>
+ * derivative of this code cannot be changed. i.e. this code cannot simply be<br>
+ * copied and put under another distribution licence<br>
+ * [including the GNU Public Licence.]<br>
+ */<br>
+</span>
+
+<br><span style="font-weight:bold">ldap3</span><br>
+<br><a href="http://ldap3.readthedocs.io/welcome.html#license">http://ldap3.readthedocs.io/welcome.html#license</a><br>
+<br>
+<span class="text-licence">
+This program is free software: you can redistribute it and/or modify<br>
+it under the terms of the GNU Lesser General Public License as published<br>
+by the Free Software Foundation, either version 3 of the License, or<br>
+(at your option) any later version.<br>
+<br>
+This program is distributed in the hope that it will be useful,<br>
+but WITHOUT ANY WARRANTY; without even the implied warranty of<br>
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the<br>
+GNU Lesser General Public License for more details.<br>
+<br>
+You should have received a copy of the GNU Lesser General Public License<br>
+along with this program in the COPYING and COPYING.LESSER files.<br>
+If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+<br>
+</span>
+<br>
+<br>
+<br>
+</div>
+
+</script>
+
+
+
+
+<!-- ================================================================== -->
+<!--                   templateShowSMimeKey                             -->
+<!-- ================================================================== -->
+<script id="templateShowSMimeKey" type="text/x-handlebars-template">
+
+	<div id="{{keyEntryId}}">
+		<div class="medskip">&#160;</div>
+		<div class="medskip">&#160;</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel-group" id="{{accordionId}}" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default" id="{{panelId}}">
+						<div class="panel-heading header" role="tab" id="{{headingId}}">
+							<div width="100%">
+								<span class="panel-title textvalignmiddle">
+									<img src="img/icon-certificate.png"/>&#160;&#160;&#160;&#160;<span style="visibility:hidden;" class="badge">0</span>&#160;&#160;&#160;<span class="font-black">{{emailAddress}}</span>
+								</span>
+							</div>
+							<div width="150px">
+								<table>
+									<tr>
+										<td>
+											<button type="button" class="btn btn-link" align="right" data-toggle="collapse" data-parent="#{{accordionId}}" data-target="#{{collapse1Id}}" aria-expanded="true" aria-controls="{{collapse1Id}}" id="{{infoId}}" onClick="toggleInfoButton('{{infoId}}', '{{collapse1Id}}Body', '{{emailAddress}}', 0)"><span class="glyphicon glyphicon-triangle-bottom link-keys4all-icon" aria-hidden="true"></span></button>
+										</td>
+										<td>
+											&#160;&#160;&#160;
+										</td>
+										<td>
+											<button type="button" class="btn btn-link" align="right" data-toggle="collapse" data-parent="#{{accordionId}}" data-target="#{{collapse2Id}}" aria-expanded="true" aria-controls="{{collapse2Id}}" id="{{actionId}}" onClick="initKeyPublicationPanel('{{passwordFieldId}}', '{{accordionId}}', '{{keyEntryId}}', '{{infoId}}', '{{privacyId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{emailAddress}}', '{{keyId}}', '{{serial}}', '{{name}}', '{{issuer}}', '{{subject}}', '{{notAfter}}', '{{notBefore}}', '{{fingerprint}}', '{{originalFingerprint}}', '{{collapse2Id}}', '{{collapse3Id}}', '{{panelId}}', '{{actionId}}', '{{domain}}', '{{submitId}}', '{{abortSMIMEModal}}', '{{revokeSMIMEModal}}', '{{abortRevocationSMIMEModal}}', 0, '', '', '', '', 0);"><span class="glyphicon glyphicon-plus link-keys4all-icon" aria-hidden="true"></span></button>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div id="{{collapse1Id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{headingId}}">
+							<div class="panel-body">
+								<span class="font-black">S/MIME</span>
+								<table class="table table-condensed">
+									<tr>
+										<td><a class="link-keys4all-small" data-toggle="modal" href="#helpTextSMIMEModal" onclick="initInfoModalSMIME('info-serial-button', 'info-issuer-button', 'info-creation-button', 'info-expire-button', 'info-fingerprint-button', 'collapse-serial', 'collapse-issuer', 'collapse-creation', 'collapse-expire', 'collapse-fingerprint');">Seriennummer:</a></td><td><span class="font-black-small">{{serial}}</span></td>
+									</tr>
+									<tr>
+										<td><a class="link-keys4all-small" data-toggle="modal" href="#helpTextSMIMEModal" onclick="initInfoModalSMIME('info-issuer-button', 'info-serial-button', 'info-creation-button', 'info-expire-button', 'info-fingerprint-button', 'collapse-issuer', 'collapse-serial', 'collapse-creation', 'collapse-expire', 'collapse-fingerprint');">Aussteller:</a></td><td><span class="font-black-small">{{issuer}}</span></td>
+									</tr>
+									<tr>
+										<td><a class="link-keys4all-small" data-toggle="modal" href="#helpTextSMIMEModal" onclick="initInfoModalSMIME('info-creation-button', 'info-serial-button', 'info-issuer-button', 'info-expire-button', 'info-fingerprint-button', 'collapse-creation', 'collapse-serial', 'collapse-issuer', 'collapse-expire', 'collapse-fingerprint');">Erstellt am:</a></td><td><span class="font-black-small">{{notBefore}}</span></td>
+									</tr>
+									<tr>
+										<td><a class="link-keys4all-small" data-toggle="modal" href="#helpTextSMIMEModal" onclick="initInfoModalSMIME('info-expire-button', 'info-serial-button', 'info-issuer-button', 'info-creation-button', 'info-fingerprint-button', 'collapse-expire', 'collapse-serial', 'collapse-issuer', 'collapse-creation', 'collapse-fingerprint');">G&#252;ltig bis:</a></td><td><span class="font-black-small">{{notAfter}}</span></td>
+									</tr>
+									<tr>
+										<td><a class="link-keys4all-small" data-toggle="modal" href="#helpTextSMIMEModal" onclick="initInfoModalSMIME('info-fingerprint-button', 'info-serial-button', 'info-issuer-button', 'info-creation-button', 'info-expire-button', 'collapse-fingerprint', 'collapse-serial', 'collapse-issuer', 'collapse-creation', 'collapse-expire');">Fingerabdruck:</a></td><td><span class="font-black-small">{{fingerprint}}</span></td>
+									</tr>
+								</table>
+								<div id="{{collapse1Id}}Body">
+
+								</div>
+							</div>
+						</div>
+						<div id="{{collapse2Id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{headingId}}">
+
+							<ul class="list-group">
+								<li class="list-group-item" id="{{privacyId}}"></li>
+								<li class="list-group-item disabled" id="{{commitEmailId}}"></li>
+								<li class="list-group-item disabled" id="{{commitKeyId}}"></li>
+							</ul>
+
+						</div>
+						<div id="{{collapse3Id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{headingId}}">
+
+							<ul class="list-group">
+								<li class="list-group-item" id="{{revocationId}}"></li>
+							</ul>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="{{abortSMIMEModal}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-decoration: none;"><span aria-hidden="true"><img src="img/button-close.png"/></span></button>
+						<span class="modal-title small-title" id="encMailModalLabel">Ver&#246;ffentlichen abbrechen?</span>
+					</div>
+					<div class="modal-body">
+						<span class="font-black">Dein Schl&#252;ssel wurde noch nicht ver&#246;ffentlicht. M&#246;chtest Du den Vorgang jetzt abbrechen?</span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-keys4all-default-black" data-dismiss="modal" onClick="abortPublication('{{infoId}}', '{{keyEntryId}}', '{{actionId}}', '{{privacyId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{collapse2Id}}', '{{emailAddress}}', 0);">Abbrechen</button>
+						<button type="button" class="btn btn-default btn-keys4all-default" data-dismiss="modal" onclick="continuePublication('{{actionId}}');" >Fortfahren</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="{{revokeSMIMEModal}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-decoration: none;"><span aria-hidden="true"><img src="img/button-close.png"/></span></button>
+						<span class="modal-title small-title" id="encMailModalLabel">Ver&#246;ffentlichung des Zertifikats widerrufen</span>
+					</div>
+					<div class="modal-body">
+						<span class="font-black">Wenn du die Ver&#246;ffentlichung deines Zertifikats widerrufst, wird dein Zertifikat vom Schl&#252;sselserver deines E-Mail-Anbieters entfernt. Dein Zertifikat kann dann nicht mehr mit Keys4All gefunden werden. M&#246;chtest du die Ver&#246;ffentlichung jetzt widerrufen?</span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-keys4all-default-black-autosize" data-dismiss="modal" onClick="abortRevocation('{{infoId}}', '{{actionId}}', '{{collapse2Id}}', '{{collapse3Id}}');">Widerrufen abbrechen</button>
+						<button type="button" class="btn btn-default btn-keys4all-default-autosize" data-dismiss="modal" onclick="continueRevocation('{{passwordFieldId}}', '{{revocationId}}', '{{infoId}}', '{{keyEntryId}}', '{{actionId}}', '{{panelId}}', '{{privacyId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{collapse1Id}}', '{{collapse2Id}}', '{{collapse3Id}}', '{{emailAddress}}', '{{originalFingerprint}}', 0, '', '', '', '', 0);" >Ver&#246;ffentlichung widerrufen</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="{{abortRevocationSMIMEModal}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-decoration: none;"><span aria-hidden="true"><img src="img/button-close.png"/></span></button>
+						<span class="modal-title small-title" id="encMailModalLabel">Widerrufen abbrechen?</span>
+					</div>
+					<div class="modal-body">
+						<span class="font-black">Die Ver&#246;ffentlichung deines Zertifikats wurde noch nicht widerrufen. M&#246;chtest Du den Vorgang jetzt abbrechen?</span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-keys4all-default-black-autosize" data-dismiss="modal" onClick="abortRevocation('{{infoId}}', '{{actionId}}', '{{collapse2Id}}', '{{collapse3Id}}');">Widerrufen abbrechen</button>
+						<button type="button" class="btn btn-default btn-keys4all-default-autosize" data-dismiss="modal" onclick="continueRevocation('{{passwordFieldId}}', '{{revocationId}}', '{{infoId}}', '{{keyEntryId}}', '{{actionId}}', '{{panelId}}', '{{privacyId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{collapse1Id}}', '{{collapse2Id}}', '{{collapse3Id}}', '{{emailAddress}}', '{{originalFingerprint}}', 0, '', '', '', '', 0);" >Fortfahren</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateShowPGPKey                               -->
+<!-- ================================================================== -->
+<script id="templateShowPGPKey" type="text/x-handlebars-template">
+	<div id="{{keyEntryId}}">
+		<div class="medskip">&#160;</div>
+		<div class="medskip">&#160;</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel-group" id="{{accordionId}}" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default" id="{{panelId}}">
+						<div class="panel-heading header" role="tab" id="{{headingId}}">
+							<div width="100%">
+								<span class="panel-title textvalignmiddle">
+									<img src="img/icon-key.png"/>&#160;&#160;&#160;<span id="{{badgeId}}" class="badge">{{numberPGPKeys}}</span>&#160;&#160;&#160;<span class="font-black">{{emailAddress}}</span>
+								</span>
+							</div>
+							<div width="150px">
+								<table>
+									<tr>
+										<td>
+											<button type="button" class="btn btn-link" align="right" data-toggle="collapse" data-parent="#{{accordionId}}" data-target="#{{collapse1Id}}" aria-expanded="true" aria-controls="{{collapse1Id}}" id="{{infoId}}" onClick="toggleInfoButton('{{infoId}}', '{{collapse1Id}}Body', '{{emailAddress}}', 1)"><span class="glyphicon glyphicon-triangle-bottom link-keys4all-icon" aria-hidden="true"></span></button>
+										</td>
+										<td>
+											&#160;&#160;&#160;
+										</td>
+										<td>
+											<button type="button" class="btn btn-link" align="right" data-toggle="collapse" data-parent="#{{accordionId}}" data-target="#{{collapse2Id}}" aria-expanded="true" aria-controls="{{collapse2Id}}" id="{{actionId}}" onClick="initKeyPublicationPanel('{{passwordFieldId}}', '{{accordionId}}', '{{keyEntryId}}', '{{infoId}}', '{{privacyId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{emailAddress}}', '{{keyId}}', '{{serial}}', '{{name}}', '{{issuer}}', '{{subject}}', '{{validUntil}}', '{{notBefore}}', '{{fingerprint}}', '{{originalFingerprint}}', '{{collapse2Id}}', '{{collapse3Id}}', '{{panelId}}', '{{actionId}}', '{{domain}}', '{{submitId}}', '{{abortPGPModal}}', '{{revokePGPModal}}', '{{abortRevocationPGPModal}}', {{numberPGPKeys}}, '{{selectOptionsId}}', '{{showHideId}}', '{{badgeId}}', '{{radioDivId}}', 1);"><span class="glyphicon glyphicon-plus link-keys4all-icon" aria-hidden="true"></span></button>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div id="{{collapse1Id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{headingId}}">
+							<div class="panel-body">
+
+								{{#each pgpData}}
+								<div id="{{this.showHideId}}{{this.index}}">
+									<span class="font-black">PGP #{{inc this.index}}</span>
+									<table class="table table-condensed">
+										<tr>
+											<td><a class="link-keys4all-small" data-toggle="modal" href="#helpTextPGPModal" onclick="initInfoModalPGP('info-keyid-button', 'info-expirepgp-button', 'info-fingerprintpgp-button', 'collapse-keyid', 'collapse-expirepgp', 'collapse-fingerprintpgp');">Schl&#252;ssel-ID:</a></td><td><span class="font-black-small">{{this.keyId}}</span></td>
+										</tr>
+										<tr>
+											<td><a class="link-keys4all-small" data-toggle="modal" href="#helpTextPGPModal" onclick="initInfoModalPGP('info-expirepgp-button', 'info-keyid-button', 'info-fingerprintpgp-button', 'collapse-expirepgp', 'collapse-keyid', 'collapse-fingerprintpgp');">G&#252;ltig bis:</a></td><td><span class="font-black-small">{{this.validUntil}}</span></td>
+										</tr>
+										<tr>
+											<td><a class="link-keys4all-small" data-toggle="modal" href="#helpTextPGPModal" onclick="initInfoModalPGP('info-fingerprintpgp-button', 'info-keyid-button', 'info-expirepgp-button', 'collapse-fingerprintpgp', 'collapse-keyid', 'collapse-expirepgp');">Fingerabdruck:</a></td><td><span class="font-black-small">{{this.fingerprint}}</span></td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<div class="radio" id="{{this.radioDivId}}{{this.index}}">
+  													<label>
+    													<input type="radio" name="{{this.selectOptionsName}}" id="{{this.selectOptionsId}}{{this.index}}" value="{{this.index}}" onClick="changeRadioButtonText('{{this.selectOptionsId}}', {{this.index}}, {{numberPGPKeys}});"/>
+														<label for="{{this.selectOptionsId}}{{this.index}}"><span class="font-black">Diesen Schl&#252;ssel ausw&#228;hlen</span></label>
+
+  													</label>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+								{{/each}}
+
+								<div id="{{collapse1Id}}Body">
+
+								</div>
+							</div>
+						</div>
+						<div id="{{collapse2Id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{headingId}}">
+
+							<ul class="list-group">
+								<li class="list-group-item" id="{{privacyId}}"></li>
+								<li class="list-group-item disabled" id="{{commitEmailId}}"></li>
+								<li class="list-group-item disabled" id="{{commitKeyId}}"></li>
+							</ul>
+
+						</div>
+						<div id="{{collapse3Id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{headingId}}">
+
+							<ul class="list-group">
+								<li class="list-group-item" id="{{revocationId}}"></li>
+							</ul>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="{{abortPGPModal}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-decoration: none;"><span aria-hidden="true"><img src="img/button-close.png"/></span></button>
+						<span class="modal-title small-title" id="encMailModalLabel">Ver&#246;ffentlichen abbrechen?</span>
+					</div>
+					<div class="modal-body">
+						<span class="font-black">Dein Schl&#252;ssel wurde noch nicht ver&#246;ffentlicht. M&#246;chtest Du den Vorgang jetzt abbrechen?</span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-keys4all-default-black" data-dismiss="modal" onClick="abortPublication('{{infoId}}', '{{keyEntryId}}', '{{actionId}}', '{{privacyId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{collapse2Id}}', '{{emailAddress}}', 1);">Abbrechen</button>
+						<button type="button" class="btn btn-default btn-keys4all-default" data-dismiss="modal" onclick="continuePublication('{{actionId}}');" >Fortfahren</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="{{revokePGPModal}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-decoration: none;"><span aria-hidden="true"><img src="img/button-close.png"/></span></button>
+						<span class="modal-title small-title" id="encMailModalLabel">Ver&#246;ffentlichung des Schl&#252;ssel widerrufen</span>
+					</div>
+					<div class="modal-body">
+						<span class="font-black">Wenn du die Ver&#246;ffentlichung deines Schl&#252;ssels widerrufst, wird dein Schl&#252;ssel vom Schl&#252;sselserver deines E-Mail-Anbieters entfernt. Dein Schl&#252;ssel kann dann nicht mehr mit Keys4All gefunden werden. M&#246;chtest du die Ver&#246;ffentlichung jetzt widerrufen?</span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-keys4all-default-black-autosize" data-dismiss="modal" onClick="abortRevocation('{{infoId}}', '{{actionId}}', '{{collapse2Id}}', '{{collapse3Id}}');">Widerrufen abbrechen</button>
+						<button type="button" class="btn btn-default btn-keys4all-default-autosize" data-dismiss="modal" onclick="continueRevocation('{{passwordFieldId}}', '{{revocationId}}', '{{infoId}}', '{{keyEntryId}}', '{{actionId}}', '{{panelId}}', '{{privacyId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{collapse1Id}}', '{{collapse2Id}}', '{{collapse3Id}}', '{{emailAddress}}', '{{originalFingerprint}}', {{numberPGPKeys}}, '{{selectOptionsId}}', '{{showHideId}}', '{{badgeId}}', '{{radioDivId}}', 1);" >Ver&#246;ffentlichung widerrufen</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="{{abortRevocationPGPModal}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-decoration: none;"><span aria-hidden="true"><img src="img/button-close.png"/></span></button>
+						<span class="modal-title small-title" id="encMailModalLabel">Widerrufen abbrechen?</span>
+					</div>
+					<div class="modal-body">
+						<span class="font-black">Die Ver&#246;ffentlichung deines Schl&#252;ssels wurde noch nicht widerrufen. M&#246;chtest Du den Vorgang jetzt abbrechen?</span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-keys4all-default-black-autosize" data-dismiss="modal" onClick="abortRevocation('{{infoId}}', '{{actionId}}', '{{collapse2Id}}', '{{collapse3Id}}');">Widerrufen abbrechen</button>
+						<button type="button" class="btn btn-default btn-keys4all-default-autosize" data-dismiss="modal" onclick="continueRevocation('{{passwordFieldId}}', '{{revocationId}}', '{{infoId}}', '{{keyEntryId}}', '{{actionId}}', '{{panelId}}', '{{privacyId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{collapse1Id}}', '{{collapse2Id}}', '{{collapse3Id}}', '{{emailAddress}}', '{{originalFingerprint}}', {{numberPGPKeys}}, '{{selectOptionsId}}', '{{showHideId}}', '{{badgeId}}', '{{radioDivId}}', 1);" >Fortfahren</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateSelectKeys                               -->
+<!-- ================================================================== -->
+<script id="templateSelectKeys" type="text/x-handlebars-template">
+	<div class="container" id="account-list">
+
+		<div class="medskip">&#160;</div>
+		<div class="medskip">&#160;</div>
+		<div>
+			<span class="small-title">Schl&#252;sselverwaltung</span>
+		</div>
+		<div class="medskip">&#160;</div>
+		<div class="medskip">&#160;</div>
+
+		<div class="row row-eq-height">
+			<div class="col-lg-8">
+					<div class="row tile font-black">
+
+						<div class="col-lg-offset-2 col-lg-10 col-lg-offset-1">
+							<div class="medskip">&#160;</div>
+							<div width="150px">
+							<a align="right" class="link-keys4all" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-pub-key-button', 'info-certificate-button', 'info-enc-email-button', 'collapse-pub-key', 'collapse-certificate', 'collapse-enc-email');"><img src="img/button-info.png"/></a>
+							</div>
+							<br/>
+							<span class="small-title">Stelle deine <a class="link-keys4all-large" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-pub-key-button', 'info-certificate-button', 'info-enc-email-button', 'collapse-pub-key', 'collapse-certificate', 'collapse-enc-email');">Schl&#252;ssel</a> und <a class="link-keys4all-large" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-certificate-button', 'info-pub-key-button', 'info-enc-email-button', 'collapse-certificate', 'collapse-pub-key', 'collapse-enc-email');">Zertifikate</a> zur Verf&#252;gung:</span>
+							<div class="medskip">&#160;</div>
+
+
+							<div id="messageSection">
+
+							</div>
+							<div class="container" id="published-keys"></div>
+							<div class="container" id="unpublished-keys"></div>
+
+							<div class="medskip">&#160;</div>
+							<div class="medskip">&#160;</div>
+							<div class="medskip">&#160;</div>
+
+						</div>
+
+					</div>
+
+			</div>
+			<div class="col-lg-offset-1 col-lg-3">
+					<div class="row tile tile-tiny">
+						<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+							<div class="medskip">&#160;</div>
+							<span class="tiny-title"><img src="img/icon-key.png" style="margin-left: auto; margin-right: auto; padding-right: 5px;"/> Schl&#252;ssel:</span>
+							<br/>
+							<span class="tiny-title" id="key-counter"></span>
+							<div class="medskip">&#160;</div>
+							<div class="medskip">&#160;</div>
+						</div>
+					</div>
+					<div class="medskip">&#160;</div>
+					<div class="medskip">&#160;</div>
+					<div class="row tile tile-tiny">
+						<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+							<div class="medskip">&#160;</div>
+							<span class="tiny-title"><img src="img/icon-certificate.png" style="margin-left: auto; margin-right: auto;"/> Zertifikate:</span>
+							<br/>
+							<span class="tiny-title" id="certificate-counter"></span>
+							<div class="medskip">&#160;</div>
+							<div class="medskip">&#160;</div>
+						</div>
+					</div>
+			</div>
+		</div>
+
+
+		<div class="modal fade modal-wide" id="privacyAgreementModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-decoration: none;"><span aria-hidden="true"><img src="img/button-close.png"/></span></button>
+						<span class="modal-title small-title" id="encMailModalLabel">Datenschutzerl&#228;rung</span>
+					</div>
+					<div class="modal-body container">
+						<div class="row">
+							<div class="col-md-9">
+								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading1">
+											<h4 class="panel-title">
+												<a id="info-sec1-button" onclick="toggleModalButtonPrivacy('info-sec1-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec1', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec1" aria-expanded="true" aria-controls="collapse-sec1" class="small-title-accordion">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">1. Welche Daten werden verarbeitet?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
+											<div class="panel-body">
+												<div class="font-black-small">
+													Es gibt verschiedene Formen &#246;ffentlicher Schl&#252;ssel. Keys4all verarbeitet:
+													<ul>
+														<li>den eingetragenen Namen,</li>
+														<li>die E-Mail-Adresse,</li>
+														<li>die Schl&#252;ssel-ID,</li>
+														<li>der Fingerprint des &#246;ffentlichen Schl&#252;ssels,</li>
+														<li>und den &#246;ffentlichen Schl&#252;ssel selbst.</li>
+													</ul>
+													Optional k&#246;nnen beispielsweise auch Land, Region, Institution, weitere Verwendungszwecke des Zertifikats,
+													Antragsteller, der Typ des &#246;ffentlichen Schl&#252;ssels, die L&#228;nge des Schl&#252;ssels und die Seriennummer des
+													Zertifikats eingetragen sein. Diese Informationen werden nicht von Keys4all angezeigt und gespeichert,
+													sind jedoch abh&#228;ngig von den Anforderungen des Zertifikatsausstellers und bleiben daher f&#252;r andere
+													Nutzer im Zertifikat sichtbar.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading2">
+											<h4 class="panel-title">
+												<a id="info-sec2-button" onclick="toggleModalButtonPrivacy('info-sec2-button', 'info-sec1-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec2', 'collapse-sec1', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec2" aria-expanded="false" aria-controls="collapse-sec2">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">2. Zu welchem Zweck werden meine Daten verarbeitet?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
+											<div class="panel-body">
+												<div class="font-black-small">
+													Keys4all stellt mit Hilfe der <strong>Key-Pull-Funktion</strong> anderen Nutzern von Keys4all deinen &#246;ffentlichen Schl&#252;ssel auf Anfrage
+													zur Verf&#252;gung. Die Kenntnis des &#246;ffentlichen Schl&#252;ssels erm&#246;glicht eine <strong>durchgehend verschl&#252;sselte Kommunikation</strong>
+													mit der zugeh&#246;rigen E-Mail-Adresse. Dein &#246;ffentlicher Schl&#252;ssel dient <strong>nur</strong> der Verschl&#252;sselung von E-Mails an
+													deine Mail-Adresse. Die im &#246;ffentlichen Schl&#252;ssel enthaltenen, personenbezogenen Daten (Name, E-Mail-Adresse,
+													Schl&#252;ssel-ID, Fingerprint) erm&#246;glichen eine Zuordnung des &#246;ffentlichen Schl&#252;ssels zu dessen Inhaber und dienen
+													als Kontroll- und Verifikationsmerkmal.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading3">
+											<h4 class="panel-title">
+												<a id="info-sec3-button" onclick="toggleModalButtonPrivacy('info-sec3-button', 'info-sec2-button', 'info-sec1-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec3', 'collapse-sec2', 'collapse-sec1', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec3" aria-expanded="false" aria-controls="collapse-sec3">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">3. Was passiert, wenn ich der Ver&#246;ffentlichung meiner Daten nicht zustimme?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
+											<div class="panel-body">
+												<div class="font-black-small">
+												Die Ver&#246;ffentlichung deiner Daten ist <strong>freiwillig</strong>. Keys4all erm&#246;glicht seinen Nutzern den &#246;ffentlichen Schl&#252;ssel eines
+												Kommunikationspartners aus einer vertrauensvollen Quelle zu beziehen. Zu jeder E-Mail-Adresse ist nur ein
+												&#246;ffentlicher Schl&#252;ssel pro Verschl&#252;sselungsverfahren (PGP oder S/MIME) verf&#252;gbar. Nur Nutzer, die sowohl &#252;ber den
+												Zugriff auf das entsprechende E-Mail-Postfach als auch auf den geheimen Schl&#252;ssel haben, k&#246;nnen einen Schl&#252;ssel
+												mit Keys4all ver&#246;ffentlichen. Damit ist sichergestellt, dass ein &#246;ffentlicher Schl&#252;ssel immer authentisch und aktuell
+												ist. Nur Nutzer von Keys4all k&#246;nnen die &#252;ber Keys4all ver&#246;ffentlichten Schl&#252;ssel abrufen. Da Keys4all sich nicht mit anderen
+												Schl&#252;sselservern synchronisiert, kannst du deinen ver&#246;ffentlichten Schl&#252;ssel jederzeit wieder l&#246;schen.
+												<br/>
+												Wenn du nicht in die Ver&#246;ffentlichung einwilligst, kann Keys4all anderen Nutzern von Keys4all deinen &#246;ffentlichen Schl&#252;ssel
+												nicht zur Verf&#252;gung stellen. Ende-zu-Ende verschl&#252;sselte E-Mail-Kommunikation ist auch ohne Keys4all m&#246;glich.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading4">
+											<h4 class="panel-title">
+												<a id="info-sec4-button" onclick="toggleModalButtonPrivacy('info-sec4-button', 'info-sec2-button', 'info-sec3-button', 'info-sec1-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec4', 'collapse-sec2', 'collapse-sec3', 'collapse-sec1', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec4" aria-expanded="false" aria-controls="collapse-sec4">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">4. Muss ich alle gefundenen Schl&#252;ssel ver&#246;ffentlichen?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+											<div class="panel-body">
+												<div class="font-black-small">
+												Nein, die Ver&#246;ffentlichung ist grunds&#228;tzlich <strong>freiwillig</strong>. Ob und welchen &#246;ffentlichen Schl&#252;ssel du uns anvertraust,
+												bleibt dir &#252;berlassen. Du kannst die Ver&#246;ffentlichung eines Schl&#252;ssels jederzeit mit Wirkung f&#252;r die Zukunft <strong>widerrufen</strong>.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading5">
+											<h4 class="panel-title">
+												<a id="info-sec5-button" onclick="toggleModalButtonPrivacy('info-sec5-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec1-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec5', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec1', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec5" aria-expanded="false" aria-controls="collapse-sec5">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">5. Wer hat Zugriff auf meine Daten?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading5">
+											<div class="panel-body">
+												<div class="font-black-small">
+												Nutzer von Keys4all, die deine vollst&#228;ndige E-Mail-Adresse kennen, k&#246;nnen nach deinem &#246;ffentlichen Schl&#252;ssel suchen und auf
+												deinen Schl&#252;ssel und die enthaltenen Daten zugreifen.
+												<br/>
+												Die Daten&#252;bertragung beim Schl&#252;ssel-Upload und beim Abruf ist mittels DANE/DNSSEC transportverschl&#252;sselt um einen
+												Eingriff durch Dritte in den &#220;bertragungsprozess zu verhindern. Dein Schl&#252;ssel wird an den Schl&#252;sselserver deines
+												E-Mail-Anbieters gesendet und erm&#246;glicht diesem den Zugriff auf deinen &#246;ffentlichen Schl&#252;ssel und die enthaltenen Daten.
+												Eine Speicherung auf Key-Servern anderer E-Mail-Anbieter erfolgt nicht.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading6">
+											<h4 class="panel-title">
+												<a id="info-sec6-button" onclick="toggleModalButtonPrivacy('info-sec6-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec1-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec6', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec1', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec6" aria-expanded="false" aria-controls="collapse-sec6">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">6. Wo werden meine Daten gespeichert?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec6" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading6">
+											<div class="panel-body">
+												<div class="font-black-small">
+												Deine Daten werden bei deinem E-Mail-Anbieter gespeichert. Das Keys4all-Modell sieht <strong>keine Synchronisation mit anderen
+												Schl&#252;sselservern</strong> vor. Je nach E-Mail-Anbieter kann sich der Schl&#252;sselserver auch au&#223;erhalb der Europ&#228;ischen Union befinden.
+												<br/>
+												Au&#223;erdem k&#246;nnen Nutzer von Keys4all deinen Schl&#252;ssel in ihren Schl&#252;sselring einf&#252;gen, damit dieser auch offline zur Verf&#252;gung steht.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading7">
+											<h4 class="panel-title">
+												<a id="info-sec7-button" onclick="toggleModalButtonPrivacy('info-sec7-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec1-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec7', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec1', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec7" aria-expanded="false" aria-controls="collapse-sec7">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">7. Wie kann ich die Ver&#246;ffentlichung widerrufen?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec7" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading7">
+											<div class="panel-body">
+												<div class="font-black-small">
+												In der <strong>Schl&#252;sselverwaltung</strong> kannst du die Ver&#246;ffentlichung eines Schl&#252;ssels widerrufen indem du den entsprechenden Schl&#252;ssel ausw&#228;hlst
+												und auf „Schl&#252;ssel l&#246;schen“ klickst. Mit deinem E-Mail-Passwort und der Passphrase best&#228;tigst du, dass du berechtigt bist den Schl&#252;ssel
+												von Key-Server zu l&#246;schen.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading8">
+											<h4 class="panel-title">
+												<a id="info-sec8-button" onclick="toggleModalButtonPrivacy('info-sec8-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec1-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec8', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec1', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec8" aria-expanded="false" aria-controls="collapse-sec8">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">8. Was passiert, wenn ich die Ver&#246;ffentlichung widerrufe?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec8" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading8">
+											<div class="panel-body">
+												<div class="font-black-small">
+												Der Widerruf der Ver&#246;ffentlichung deines &#246;ffentlichen Schl&#252;ssels bedeutet, dass der Schl&#252;ssel in Zukunft nicht mehr auf den Key-Server
+												deines E-Mail-Anbieters zur Verf&#252;gung steht. Andere Nutzer von Keys4all k&#246;nnen diesen Schl&#252;ssel dann nicht mehr aus dieser Quelle beziehen.
+												Der Widerruf hat keinen Einfluss auf die Datenverarbeitung in der Zeit vor dem Widerruf.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading9">
+											<h4 class="panel-title">
+												<a id="info-sec9-button" onclick="toggleModalButtonPrivacy('info-sec9-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec1-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec9', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec1', 'collapse-sec10', 'collapse-sec11');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec9" aria-expanded="false" aria-controls="collapse-sec9">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">9. Wie lange werden die Daten gespeichert?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec9" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading9">
+											<div class="panel-body">
+												<div class="font-black-small">
+												Die Daten werden gespeichert bis du deinen Schl&#252;ssel l&#246;schst oder du dein E-Mail-Konto bei deinem Anbieter k&#252;ndigst.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading10">
+											<h4 class="panel-title">
+												<a id="info-sec10-button" onclick="toggleModalButtonPrivacy('info-sec10-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec1-button', 'info-sec11-button', 'collapse-sec10', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec1', 'collapse-sec11');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec10" aria-expanded="false" aria-controls="collapse-sec10">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">10. Wer ist f&#252;r die Datenverarbeitung verantwortlich?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec10" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading10">
+											<div class="panel-body">
+												<div class="font-black-small">
+												Die f&#252;r die Datenverarbeitung verantwortliche Stelle ist dein E-Mail-Anbieter. Bei Fragen zur Datenverarbeitung und zum Datenschutz
+												wende dich direkt an diesen oder an dessen Datenschutzbeauftragten.
+												<br/><br/>
+												<i>Kontaktdaten des Verantwortlichen:</i>
+												<br/><br/>
+												<i>Kontaktdaten des Datenschutzbeauftragten:</i>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading11">
+											<h4 class="panel-title">
+												<a id="info-sec11-button" onclick="toggleModalButtonPrivacy('info-sec11-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec1-button', 'collapse-sec11', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec1');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-sec11" aria-expanded="false" aria-controls="collapse-sec11">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="tiny-title-accordion">11. Zust&#228;ndige Aufsichtsbeh&#246;rde</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-sec11" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading11">
+											<div class="panel-body">
+												<div class="font-black-small">
+												Beschwerden k&#246;nnen an jede Aufsichtsbeh&#246;rde f&#252;r Datenschutz der L&#228;nder oder des Bundes gerichtet werden.
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<div class="modal-footer">
+
+					</div>-->
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade modal-wide" id="helpTextSMIMEModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-decoration: none;"><span aria-hidden="true"><img src="img/button-close.png"/></span></button>
+					</div>
+					<div class="modal-body container">
+						<div class="row">
+							<div class="col-md-9">
+								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<h4 class="panel-title">
+												<a id="info-serial-button" onclick="toggleModalButtonSMIME('info-serial-button', 'info-issuer-button', 'info-creation-button', 'info-expire-button', 'info-fingerprint-button', 'collapse-serial', 'collapse-issuer', 'collapse-creation', 'collapse-expire', 'collapse-fingerprint');" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-serial" aria-expanded="true" aria-controls="collapse-serial" class="small-title-accordion">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="small-title-accordion">Seriennummer</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-serial" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+											<div class="panel-body">
+												<div class="font-black">
+													&#220;ber die Seriennummer ist das Zertifikat eindeutig zuzuordnen.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingTwo">
+											<h4 class="panel-title">
+												<a id="info-issuer-button" onclick="toggleModalButtonSMIME('info-issuer-button', 'info-serial-button', 'info-creation-button', 'info-expire-button', 'info-fingerprint-button', 'collapse-issuer', 'collapse-serial', 'collapse-creation', 'collapse-expire', 'collapse-fingerprint');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-issuer" aria-expanded="false" aria-controls="collapse-issuer">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="small-title-accordion">Aussteller</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-issuer" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+											<div class="panel-body">
+												<div class="font-black">
+												Dein Zertifikat wird dir von einer Zertifizierungsstelle ausgestellt. Diese beglaubigt durch ihre digitale Unterschrift die Zugeh&#246;rigkeit deines &#246;ffentlichen und dazugeh&#246;rigen privaten Schl&#252;ssels zu dir. So k&#246;nnen deine Kommunikationspartner sicher sein, dass eine mit diesem Zertifikat verschl&#252;sselte E-Mail tats&#228;chlich nur von dir wieder entschl&#252;sselt werden kann.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingThree">
+											<h4 class="panel-title">
+												<a id="info-creation-button" onclick="toggleModalButtonSMIME('info-creation-button', 'info-serial-button', 'info-issuer-button', 'info-expire-button', 'info-fingerprint-button', 'collapse-creation', 'collapse-serial', 'collapse-issuer', 'collapse-expire', 'collapse-fingerprint');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-creation" aria-expanded="false" aria-controls="collapse-creation">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="small-title-accordion">Erstellungsdatum</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-creation" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+											<div class="panel-body">
+												<div class="font-black">
+												Das Erstellungsdatum gibt Auskunft dar&#252;ber, wann dein Zertifikat von der Zertifizierungsstelle ausgestellt wurde.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingFour">
+											<h4 class="panel-title">
+												<a id="info-expire-button" onclick="toggleModalButtonSMIME('info-expire-button', 'info-serial-button', 'info-issuer-button', 'info-creation-button', 'info-fingerprint-button', 'collapse-expire', 'collapse-serial', 'collapse-issuer', 'collapse-creation', 'collapse-fingerprint');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-expire" aria-expanded="false" aria-controls="collapse-expire">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="small-title-accordion">Ablaufdatum</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-expire" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+											<div class="panel-body">
+												<div class="font-black">
+												Das Ablaufdatum gibt Auskunft &#252;ber die G&#252;ltigkeit deines Zertifikats. Wenn dein Zertifikat abl&#228;uft, kann es nicht mehr zum Verschl&#252;sseln von E-Mails verwendet werden. Du musst dir in diesem Fall ein neues Zertifikat besorgen.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingFive">
+											<h4 class="panel-title">
+												<a id="info-fingerprint-button" onclick="toggleModalButtonSMIME('info-fingerprint-button', 'info-serial-button', 'info-issuer-button', 'info-creation-button', 'info-expire-button', 'collapse-fingerprint', 'collapse-serial', 'collapse-issuer', 'collapse-creation', 'collapse-expire');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-fingerprint" aria-expanded="false" aria-controls="collapse-fingerprint">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="small-title-accordion">Fingerabdruck</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-fingerprint" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+											<div class="panel-body">
+												<div class="font-black">
+												Der Fingerabdruck ist ein Sicherheitsmerkmal und Teil deines Zertifikats. Wenn du Zweifel hast, ob ein Zertifikat tats&#228;chlich zu dem Empf&#228;nger deiner E-Mail geh&#246;rt, kannst du den Fingerabdruck des Zertifikats des Empf&#228;ngers zur &#252;berpr&#252;fung nutzen, indem du z.B. telefonisch oder auf einem anderen Weg den Fingerabdruck des Zertifikats erfragst und mit dem aus dem Zertifikat vergleichst. So kannst du dir ganz sicher sein, dass die E-Mail wirklich nur von dem gew&#252;nschten Empf&#228;nger entschl&#252;sselt werden kann.
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<div class="modal-footer">
+
+					</div>-->
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade modal-wide" id="helpTextPGPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-decoration: none;"><span aria-hidden="true"><img src="img/button-close.png"/></span></button>
+					</div>
+					<div class="modal-body container">
+						<div class="row">
+							<div class="col-md-9">
+								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<h4 class="panel-title">
+												<a id="info-keyid-button" onclick="toggleModalButtonPGP('info-keyid-button', 'info-expirepgp-button', 'info-fingerprintpgp-button', 'collapse-keyid', 'collapse-expirepgp', 'collapse-fingerprintpgp');" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-keyid" aria-expanded="true" aria-controls="collapse-keyid" class="small-title-accordion">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="small-title-accordion">Schl&#252;ssel-ID</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-keyid" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+											<div class="panel-body">
+												<div class="font-black">
+													Das ist die Kennnummer bzw. der Name deines Schl&#252;ssels.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingTwo">
+											<h4 class="panel-title">
+												<a id="info-expirepgp-button" onclick="toggleModalButtonPGP('info-expirepgp-button', 'info-keyid-button', 'info-fingerprintpgp-button', 'collapse-expirepgp', 'collapse-keyid', 'collapse-fingerprintpgp');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-expirepgp" aria-expanded="false" aria-controls="collapse-expirepgp">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="small-title-accordion">Ablaufdatum</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-expirepgp" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+											<div class="panel-body">
+												<div class="font-black">
+												Das Ablaufdatum gibt Auskunft &#252;ber die G&#252;ltigkeit deines &#246;ffentlichen Schl&#252;ssels. Wie lange dein Schl&#252;ssel g&#252;ltig ist, kannst du beim Erstellen des Schl&#252;sselpaares ausw&#228;hlen.  Wenn dein &#246;ffentlicher Schl&#252;ssel abl&#228;uft, kann er nicht mehr zum Verschl&#252;sseln von E-Mails verwendet werden. Du kannst deinen Schl&#252;ssel jedoch jederzeit verl&#228;ngern.
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingThree">
+											<h4 class="panel-title">
+												<a id="info-fingerprintpgp-button" onclick="toggleModalButtonPGP('info-fingerprintpgp-button', 'info-keyid-button', 'info-expirepgp-button', 'collapse-fingerprintpgp', 'collapse-keyid', 'collapse-expirepgp');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-fingerprintpgp" aria-expanded="false" aria-controls="collapse-fingerprintpgp">
+													<img src="img/button-extend.png"/>&#160;&#160;&#160;&#160;<span class="small-title-accordion">Fingerabdruck</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-fingerprintpgp" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+											<div class="panel-body">
+												<div class="font-black">
+												Der Fingerabdruck ist ein Sicherheitsmerkmal und Teil deines &#246;ffentlichen Schl&#252;ssels. Wenn du Zweifel hast, ob ein &#246;ffentlicher Schl&#252;ssel tats&#228;chlich zu dem Empf&#228;nger deiner E-Mail geh&#246;rt, kannst du den Fingerabdruck des &#246;ffentlichen Schl&#252;ssels des Empf&#228;ngers zur &#252;berpr&#252;fung nutzen, indem du z.B. telefonisch oder auf einem anderen Weg den Fingerabdruck des &#246;ffentlichen Schl&#252;ssels erfragst und mit dem aus dem &#246;ffentlichen Schl&#252;ssel vergleichst. So kannst du dir ganz sicher sein, dass die E-Mail wirklich nur von dem gew&#252;nschten Empf&#228;nger entschl&#252;sselt werden kann.
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<div class="modal-footer">
+
+					</div>-->
+				</div>
+			</div>
+		</div>
+
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templatePrivacyAgreementMin                      -->
+<!-- ================================================================== -->
+<script id="templatePrivacyAgreementMin" type="text/x-handlebars-template">
+	<span class="font-black">1. Datenschutzeinwilligung</span>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templatePrivacyAgreementCollapsedPGP             -->
+<!-- ================================================================== -->
+<script id="templatePrivacyAgreementCollapsedPGP" type="text/x-handlebars-template">
+	<div>
+		<span class="font-black">1. Datenschutzeinwilligung</span>
+		<div class="medskip">&#160;</div>
+		<p>
+			<span class="font-black">
+			Wenn du diesen Schl&#252;ssel zur Verf&#252;gung stellst, werden dein &#246;ffentlicher Schl&#252;ssel und folgende darin enthaltene Daten auf dem Schl&#252;sselserver deines E-Mail-Anbieters <span class="font-black-bold">{{domain}}</span> ver&#246;ffentlicht:
+			</span>
+		</p>
+		<table class="table table-condensed">
+			<tr>
+				<td><span class="font-black-small">E-Mail-Adresse:</span></td><td><span class="font-black-small-bold">{{emailAddress}}</span></td>
+			</tr>
+			<tr>
+				<td><span class="font-black-small">&#214;ffentlicher Schl&#252;ssel:</span></td><td><span class="font-black-small-bold">Schl&#252;ssel-ID: {{keyId}}</span></td>
+			</tr>
+			<tr>
+				<td><span class="font-black-small">Zugeh&#246;rige Schl&#252;sseldaten:</span></td><td><span class="font-black-small-bold">User ID: {{name}}<br/>Ablaufdatum: {{validUntil}}<br/>Fingerabdruck: {{fingerprint}}</span></td>
+			</tr>
+		</table>
+		<p>
+			<table>
+				<tr>
+					<!--<td valign="top">
+						<small><span class="glyphicon glyphicon-file" aria-hidden="true"></span></small>
+					</td>
+					<td>&#160;&#160;&#160;</td>-->
+					<td valign="top">
+						<span class="font-black">Erfahre mehr in der </span><a data-toggle="modal" href="#privacyAgreementModal" class="link-keys4all" onclick="initInfoModalPrivacy('info-sec1-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec1', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');">Datenschutzerkl&#228;rung</a>
+					</td>
+				</tr>
+			</table>
+		</p>
+		<form>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" onClick="this.checked ? document.getElementById('{{submitId}}').disabled = false : document.getElementById('{{submitId}}').disabled = true;"><span class="font-black">Ich bin mit der Ver&#246;ffentlichung der oben aufgef&#252;hrten Daten einverstanden.</span></input>
+				</label>
+			</div>
+			<div class="medskip">&#160;</div>
+			<button type="button" class="btn btn-default btn-keys4all-default-black" data-toggle="modal" data-parent="#{{accordionId}}" data-target="#{{abortModalId}}" aria-expanded="true" aria-controls="{{collapse2Id}}">Abbrechen</button>
+			<button type="submit" class="btn btn-default btn-keys4all-default" id="{{submitId}}" disabled="disabled" onClick="agreePrivacy('{{passwordFieldId}}', '{{keyEntryId}}', '{{privacyId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{collapse2Id}}', '{{panelId}}', '{{infoId}}', '{{actionId}}', '{{emailAddress}}', '{{originalFingerprint}}', {{numberPGPKeys}}, '{{selectOptionsId}}', '{{showHideId}}', '{{badgeId}}', '{{radioDivId}}', 1);">Weiter</button>
+		</form>
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templatePrivacyAgreementCollapsedSMIME           -->
+<!-- ================================================================== -->
+<script id="templatePrivacyAgreementCollapsedSMIME" type="text/x-handlebars-template">
+	<div>
+		<span class="font-black">1. Datenschutzeinwilligung</span>
+		<div class="medskip">&#160;</div>
+		<p>
+			<span class="font-black">
+			Wenn du dieses Zertifikat zur Verf&#252;gung stellst, werden dein Zertifikat und folgende darin enthaltene Daten auf dem Schl&#252;sselserver deines E-Mail-Anbieters <span class="font-black-bold">{{domain}}</span> ver&#246;ffentlicht:
+			</span>
+		</p>
+		<table class="table table-condensed">
+			<tr>
+				<td><span class="font-black-small">E-Mail-Adresse:</span></td><td><span class="font-black-small-bold">{{emailAddress}}</span></td>
+			</tr>
+			<tr>
+				<td><span class="font-black-small">Zertifikat:</span></td><td><span class="font-black-small-bold">Seriennummer: {{serial}}</span></td>
+			</tr>
+			<tr>
+				<td><span class="font-black-small">Zugeh&#246;rige Zertifikatsdaten:</span></td><td><span class="font-black-small-bold">Inhaber: {{subject}}<br/>Aussteller: {{issuer}}<br/>Erstellt am: {{notBefore}}<br/>G&#252;ltig bis: {{notAfter}}<br/>Fingerabdruck: {{fingerprint}}</span></td>
+			</tr>
+		</table>
+		<p>
+			<table>
+				<tr>
+					<!--<td valign="top">
+						<small><span class="glyphicon glyphicon-file" aria-hidden="true"></span></small>
+					</td>
+					<td>&#160;&#160;&#160;</td>-->
+					<td valign="top">
+						<span class="font-black">Erfahre mehr in der </span><a data-toggle="modal" href="#privacyAgreementModal" class="link-keys4all" onclick="initInfoModalPrivacy('info-sec1-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec1', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');">Datenschutzerkl&#228;rung</a>
+					</td>
+				</tr>
+			</table>
+
+		</p>
+		<form>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" onClick="this.checked ? document.getElementById('{{submitId}}').disabled = false : document.getElementById('{{submitId}}').disabled = true;"><span class="font-black">Ich bin mit der Ver&#246;ffentlichung der oben aufgef&#252;hrten Daten einverstanden.</span></input>
+				</label>
+			</div>
+			<div class="medskip">&#160;</div>
+			<button type="button" class="btn btn-default btn-keys4all-default-black" data-toggle="modal" data-parent="#{{accordionId}}" data-target="#{{abortModalId}}" aria-expanded="true" aria-controls="{{collapse2Id}}">Abbrechen</button>
+			<button type="submit" class="btn btn-default btn-keys4all-default" id="{{submitId}}" disabled="disabled" onClick="agreePrivacy('{{passwordFieldId}}', '{{keyEntryId}}', '{{privacyId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{collapse2Id}}', '{{panelId}}', '{{infoId}}', '{{actionId}}', '{{emailAddress}}', '{{originalFingerprint}}', 0, '', '', '', '', 0);">Weiter</button>
+		</form>
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateCommitEMailMin                           -->
+<!-- ================================================================== -->
+<script id="templateCommitEMailMin" type="text/x-handlebars-template">
+	<span class="font-black">2. E-Mail-Adresse best&#228;tigen</span>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateCommitEMailCollapsed                     -->
+<!-- ================================================================== -->
+<script id="templateCommitEMailCollapsed" type="text/x-handlebars-template">
+	<div>
+		<span class="font-black">2. E-Mail-Adresse best&#228;tigen</span>
+		<div class="medskip">&#160;</div>
+		<p>
+			<span class="font-black">
+			Bevor dein E-Mail-Anbieter diesen Schl&#252;ssel ver&#246;ffentlicht, wird &#252;berpr&#252;ft, ob die zugeh&#246;rige E-Mail-Adresse tats&#228;chlich Deine ist. Bitte gib daf&#252;r das Passwort Deiner E-Mail-Adresse ein.
+			</span>
+		</p>
+		<div class="medskip">&#160;</div>
+		<span class="font-black-bold">{{emailAddress}}</span>
+		<div class="medskip">&#160;</div>
+		<center>
+			<form style="max-width:300px">
+				<input type="password" class="form-control input-keys4all-password" placeholder="Passwort E-Mail-Adresse" id="{{passwordFieldId}}"/>
+				<div class="medskip">&#160;</div>
+				<div class="input-group">
+					<button class="btn btn-default btn-keys4all-default" type="button" onClick="commitEMail('{{passwordFieldId}}', '{{keyEntryId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{collapse2Id}}', '{{panelId}}', '{{infoId}}', '{{actionId}}', '{{emailAddress}}', '{{originalFingerprint}}', {{numberPGPKeys}}, '{{selectOptionsId}}', '{{showHideId}}', '{{badgeId}}', '{{radioDivId}}', {{isPGP}});">Best&#228;tigen</button>
+				</div>
+			</form>
+		</center>
+		<div class="medskip">&#160;</div>
+		<div class="medskip">&#160;</div>
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateCommitKeyMin                             -->
+<!-- ================================================================== -->
+<script id="templateCommitKeyMin" type="text/x-handlebars-template">
+	<span class="font-black">3. Schl&#252;ssel best&#228;tigen</span>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateCommitKeyCollapsed                       -->
+<!-- ================================================================== -->
+<script id="templateCommitKeyCollapsed" type="text/x-handlebars-template">
+	<div>
+		<span class="font-black">3. Schl&#252;ssel best&#228;tigen</span>
+		<div class="medskip">&#160;</div>
+		<p>
+			<span class="font-black">
+			Als n&#228;chstes wird &#252;berpr&#252;ft, ob der &#246;ffentliche Schl&#252;ssel zu Dir geh&#246;rt. F&#252;r diese &#220;berpr&#252;fung wird eventuell Dein Schl&#252;ssel-Passwort (Passphrase) ben&#246;tigt.
+			</span>
+		</p>
+		<div class="medskip">&#160;</div>
+		<button class="btn btn-default btn-keys4all-default" type="button" onClick="commitKey('{{keyEntryId}}', '{{collapse2Id}}', '{{panelId}}', '{{infoId}}', '{{actionId}}', '{{emailAddress}}', '{{originalFingerprint}}', {{numberPGPKeys}}, '{{selectOptionsId}}', '{{showHideId}}', '{{badgeId}}', '{{radioDivId}}', {{isPGP}});">&#220;berpr&#252;fen</button>
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateHelpTextPublicKey                        -->
+<!-- ================================================================== -->
+<script id="templateHelpTextPublicKey" type="text/x-handlebars-template">
+	<div>
+		<h4 class="modal-title">Was ist ein &#246;ffentlicher Schl&#252;ssel?</h4>
+		<div class="medskip">&#160;</div>
+		<p>
+		F&#252;r die Verschl&#252;sselung von E-Mails mit dem Verschl&#252;sselungsverfahren PGP ben&#246;tigst du ein Schl&#252;sselpaar. Dieses besteht aus dem "&#246;ffentlichen Schl&#252;ssel" und dem "geheimen Schl&#252;ssel". Deine Kommunikationspartner ben&#246;tigen deinen "&#246;ffentlichen Schl&#252;ssel", um E-Mails an dich zu schicken. Mit deinem zugeh&#246;rigen "privaten Schl&#252;ssel" kannst du diese dann wieder entschl&#252;sseln.
+		</p>
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateHelpTextCertificate                      -->
+<!-- ================================================================== -->
+<script id="templateHelpTextCertificate" type="text/x-handlebars-template">
+	<div>
+		<h4 class="modal-title">Was ist ein Zertifikat?</h4>
+		<div class="medskip">&#160;</div>
+		<p>
+		Zur Verschl&#252;sselung von E-Mails mit dem Verschl&#252;sselungsverfahren S/MIME ben&#246;tigst du ein Zertifikat. Das Zertifikat enth&#228;lt deinen "&#246;ffentlichen Schl&#252;ssel", den deine Kommunikationspartner ben&#246;tigen, um dir verschl&#252;sselte E-Mails zu schicken. Mit deinem zugeh&#246;rigen "privaten Schl&#252;ssel", den nur du hast, kannst du diese dann wieder entschl&#252;sseln.
+		</p>
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateHelpTextEncryptedMail                    -->
+<!-- ================================================================== -->
+<script id="templateHelpTextEncryptedMail" type="text/x-handlebars-template">
+	<div>
+		<h4 class="modal-title">Was ist eine verschl&#252;sselte E-Mail?</h4>
+		<div class="medskip">&#160;</div>
+		<p>
+		E-Mail-Verschl&#252;sselung wird verwendet, um vertrauliche Informationen so per E-Mail zu verschicken, dass niemand außer Absender und Empf&#228;nger Zugang zu diesen Informationen bekommen. Ein Verschl&#252;sselungsprogramm erzeugt dabei mit Hilfe eines &#246;ffentlichen Schl&#252;ssels aus dem Klartext einen Geheimtext. Nur der Empf&#228;nger, der den zugeh&#246;rigen privaten Schl&#252;ssel kennt, kann den Text wieder entschl&#252;sseln.
+		</p>
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateErrorMessage                             -->
+<!-- ================================================================== -->
+<script id="templateErrorMessage" type="text/x-handlebars-template">
+	<div class="alert alert-danger alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&#x00D7;</span></button>
+		<strong>{{title}}</strong> {{message}}
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateSuccessMessage                           -->
+<!-- ================================================================== -->
+<script id="templateSuccessMessage" type="text/x-handlebars-template">
+	<div class="alert alert-info-keys4all alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&#x00D7;</span></button>
+		<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>&#160;&#160;<strong>{{title}}</strong> {{message}}
+	</div>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templatePrivacyAgreementRevovation               -->
+<!-- ================================================================== -->
+<script id="templatePrivacyAgreementRevovation" type="text/x-handlebars-template">
+	<table>
+		<tr>
+			<!--<td valign="top">
+				<small><span class="glyphicon glyphicon-file" aria-hidden="true"></span></small>
+			</td>
+			<td>&#160;&#160;&#160;</td>-->
+			<td valign="top">
+				<span class="font-black-small">Erfahre mehr in der </span><a class="link-keys4all-small" data-toggle="modal" href="#privacyAgreementModal" onclick="initInfoModalPrivacy('info-sec1-button', 'info-sec2-button', 'info-sec3-button', 'info-sec4-button', 'info-sec5-button', 'info-sec6-button', 'info-sec7-button', 'info-sec8-button', 'info-sec9-button', 'info-sec10-button', 'info-sec11-button', 'collapse-sec1', 'collapse-sec2', 'collapse-sec3', 'collapse-sec4', 'collapse-sec5', 'collapse-sec6', 'collapse-sec7', 'collapse-sec8', 'collapse-sec9', 'collapse-sec10', 'collapse-sec11');">Datenschutzerkl&#228;rung</a>
+			</td>
+		</tr>
+	</table>
+</script>
+
+<!-- ================================================================== -->
+<!--                   templateRevokePublicationCollapsed               -->
+<!-- ================================================================== -->
+<script id="templateRevokePublicationCollapsed" type="text/x-handlebars-template">
+	<div>
+		<span class="font-black">1. Ver&#246;ffentlichung widerrufen</span>
+		<div class="medskip">&#160;</div>
+		<p>
+			<span class="font-black">
+			Bevor du die Ver&#246;ffentlichung deines Schl&#252;ssels widerrufen kannst, wird &#252;berpr&#252;ft, ob die zugeh&#246;rige E-Mail-Adresse tats&#228;chlich deine ist. Bitte gib daf&#252;r das Passwort deiner E-Mail-Adresse ein.
+			</span>
+		</p>
+		<div class="medskip">&#160;</div>
+		<span class="font-black-bold">{{emailAddress}}</span>
+		<div class="medskip">&#160;</div>
+		<center>
+			<form style="max-width:300px">
+				<input type="password" class="form-control input-keys4all-password" placeholder="Passwort E-Mail-Adresse" id="revoke{{passwordFieldId}}"/>
+				<div class="medskip">&#160;</div>
+				<div class="input-group">
+					<span class="input-group-btn">
+						<button class="btn btn-default btn-keys4all-default" type="button" onClick="commitEMailRevocation('revoke{{passwordFieldId}}', '{{keyEntryId}}', '{{commitEmailId}}', '{{commitKeyId}}', '{{collapse2Id}}', '{{collapse3Id}}', '{{panelId}}', '{{infoId}}', '{{actionId}}', '{{emailAddress}}', '{{originalFingerprint}}', {{numberPGPKeys}}, '{{selectOptionsId}}', '{{showHideId}}', '{{badgeId}}', '{{radioDivId}}', {{isPGP}});">Best&#228;tigen</button>
+					</span>
+				</div>
+			</form>
+		</center>
+		<div class="medskip">&#160;</div>
+		<div class="medskip">&#160;</div>
+	</div>
+</script>
+
+</head>
+</html>

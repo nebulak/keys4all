@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="vvv-addon" default="build" basedir=".">
+
+	<property name="pluging.filename" value="keys4all.xpi" />
+
+	<target name="build">
+		<!-- delete existing addon file -->
+		<delete file="dist/${pluging.filename}" verbose="true" />
+
+		<!-- copy win binaries -->
+		<copy file="native_dist/win/SecureFetch.exe" tofile="src/chrome/content/native/win/SecureFetch.exe" preservelastmodified="true" overwrite="true" force="true" failonerror="false"/>
+		<copy file="native_dist/win/WinGetEnv.exe" tofile="src/chrome/content/native/win/WinGetEnv.exe" preservelastmodified="true" overwrite="true" force="true" failonerror="false"/>
+
+		<!-- copy binary dependencies -->
+		<copy file="native_dist/win_libs/libeay32.dll" tofile="src/chrome/content/native/win/libeay32.dll" preservelastmodified="true" overwrite="true" force="true" failonerror="false"/>
+		<copy file="native_dist/win_libs/libldns-1.dll" tofile="src/chrome/content/native/win/libldns-1.dll" preservelastmodified="true" overwrite="true" force="true" failonerror="false"/>
+		<copy file="native_dist/win_libs/msys-unbound-2.dll" tofile="src/chrome/content/native/win/msys-unbound-2.dll" preservelastmodified="true" overwrite="true" force="true" failonerror="false"/>
+		<copy file="native_dist/win_libs/ssleay32.dll" tofile="src/chrome/content/native/win/ssleay32.dll" preservelastmodified="true" overwrite="true" force="true" failonerror="false"/>
+		<copy file="python_src/dist/ldap_tool.exe" tofile="src/chrome/content/native/gnu/ldap_tool.exe" preservelastmodified="true" overwrite="true" force="true" failonerror="false"/>
+
+		<!-- copy gnu binaries -->
+		<copy file="native_dist/gnu/SecureFetch" tofile="src/chrome/content/native/gnu/SecureFetch" preservelastmodified="true" overwrite="true" force="true" failonerror="false"/>
+		<copy file="python_src/dist/ldap_tool" tofile="src/chrome/content/native/gnu/ldap_tool" preservelastmodified="true" overwrite="true" force="true" failonerror="false"/>
+
+
+		<!-- copy trust anchor -->
+		<copy file="native_dist/shared/trust-anchor.txt" tofile="src/chrome/content/native/win/trust-anchor.txt" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="native_dist/shared/trust-anchor.txt" tofile="src/chrome/content/native/gnu/trust-anchor.txt" preservelastmodified="true" overwrite="true" force="true"/>
+
+		<!-- copy 3rd-party dependencies -->
+		<copy file="3rd_party/bootstrap.js" tofile="src/chrome/content/ui/js/bootstrap.js" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/bootstrap.min.js" tofile="src/chrome/content/ui/js/bootstrap.min.js" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/handlebars.min.js" tofile="src/chrome/content/ui/js/handlebars.min.js" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/jquery.mustache.js" tofile="src/chrome/content/ui/js/jquery.mustache.js" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/jquery-2.2.3.min.js" tofile="src/chrome/content/ui/js/jquery-2.2.3.min.js" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/mustache.min.js" tofile="src/chrome/content/ui/js/mustache.min.js" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/openpgp.worker.min.js" tofile="src/chrome/content/ui/js/openpgp.worker.min.js" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/sha256.min.js" tofile="src/chrome/content/ui/js/sha256.min.js" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/subprocess.jsm" tofile="src/chrome/content/ui/js/subprocess.jsm" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/subprocess_worker_unix.js" tofile="src/chrome/content/ui/js/subprocess_worker_unix.js" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/subprocess_worker_win.js" tofile="src/chrome/content/ui/js/subprocess_worker_win.js" preservelastmodified="true" overwrite="true" force="true"/>
+
+
+		<copy file="3rd_party/bootstrap.css" tofile="src/chrome/content/ui/css/bootstrap.css" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/bootstrap.min.css" tofile="src/chrome/content/ui/css/bootstrap.min.css" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/bootstrap.css.map" tofile="src/chrome/content/ui/css/bootstrap.css.map" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/bootstrap.min.css.map" tofile="src/chrome/content/ui/css/bootstrap.min.css.map" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/bootstrap-theme.css" tofile="src/chrome/content/ui/css/bootstrap-theme.css" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/bootstrap-theme.css.map" tofile="src/chrome/content/ui/css/bootstrap-theme.css.map" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/bootstrap-theme.min.css" tofile="src/chrome/content/ui/css/bootstrap-theme.min.css" preservelastmodified="true" overwrite="true" force="true"/>
+		<copy file="3rd_party/bootstrap-theme.min.css.map" tofile="src/chrome/content/ui/css/bootstrap-theme.min.css.map" preservelastmodified="true" overwrite="true" force="true"/>
+
+
+		<!-- create addon file -->
+		<zip destfile="dist/${pluging.filename}" encoding="UTF-8">
+			<zipfileset dir="src" includes="chrome.manifest,install.rdf" prefix="" />
+			<zipfileset dir="src/chrome" includes="**/*" excludes="content/old/**" prefix="chrome/" />
+		</zip>
+	</target>
+
+
+</project>

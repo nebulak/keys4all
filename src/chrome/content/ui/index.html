@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<!--
+Keys4All Thunderbird-Addon
+Designed and developed by
+Fraunhofer Institute for Secure Information Technology SIT
+<https://www.sit.fraunhofer.de>
+(C) Copyright FhG SIT, 2018
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<title>Verschlüsselungsportal</title>
+
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/simple-sidebar.css" rel="stylesheet">
+		<link href="css/vvv.css" rel="stylesheet">
+
+		<script src="js/jquery-2.2.3.min.js"></script>
+
+		<script type="text/javascript" src="js/jquery.mustache.js"></script>
+		<script type="text/javascript" src="js/mustache.min.js"></script>
+		<script type="text/javascript" src="js/vvv-templateloader.js"></script>
+		<script type="text/javascript" src="js/openpgp.min.js"></script>
+		<script type="text/javascript" src="js/handlebars.min.js"></script>
+
+		<script src="js/vvv-key-cache.js"></script>
+		<script src="js/modules.js"></script>
+		<script src="js/vvv-account-manager.js"></script>
+		<script src="js/vvv-key-upload.js"></script>
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+		<script>
+			<!-- Register a Handlebars helper function "inc" that increments a value by 1 -->
+			Handlebars.registerHelper("inc", function(value, options) {
+				return parseInt(value) + 1;
+			});
+
+			var templateStart;
+			var templateShowSMimeKey;
+			var templateShowPGPKey;
+			var templateSelectKeys;
+
+			var templatePrivacyAgreementMin;
+			var templatePrivacyAgreementCollapsedPGP;
+			var templatePrivacyAgreementCollapsedSMime;
+			var templateCommitEMailMin;
+			var templateCommitEMailCollapsed;
+			var templateCommitKeyMin;
+			var templateCommitKeyCollapsed;
+			var templatePrivacyAgreementRevovation;
+			var templateRevokePublicationCollapsed;
+
+			var templateHelpTextPublicKey;
+			var templateHelpTextCertificate;
+			var templateHelpTextEncryptedMail;
+
+			var templateErrorMessage;
+			var templateSuccessMessage;
+
+			var templateAbout;
+
+			var templatesFile = "templates.html"
+			var allTemplatesInitialized= $.Deferred();
+			var templatesFileLoaded = $.Deferred();
+			var templates = new LoadTemplate(templatesFileLoaded, templatesFile);
+
+			// wait until the templates file has been loaded
+			$.when(templatesFileLoaded).done(function(result){
+				Application.console.log("Template file loaded ...");
+				var sourceStart = templates.getTemplate("#templateStart");
+				templateStart = Handlebars.compile(sourceStart);
+
+				var sourceShowSMimeKey = templates.getTemplate("#templateShowSMimeKey");
+				templateShowSMimeKey = Handlebars.compile(sourceShowSMimeKey);
+
+				var sourceShowPGPKey = templates.getTemplate("#templateShowPGPKey");
+				templateShowPGPKey = Handlebars.compile(sourceShowPGPKey);
+
+				var sourceSelectKeys = templates.getTemplate("#templateSelectKeys");
+				templateSelectKeys = Handlebars.compile(sourceSelectKeys);
+
+				var sourcePrivacyAgreementMin = templates.getTemplate("#templatePrivacyAgreementMin");
+				templatePrivacyAgreementMin = Handlebars.compile(sourcePrivacyAgreementMin);
+				var sourcePrivacyAgreementCollapsedPGP = templates.getTemplate("#templatePrivacyAgreementCollapsedPGP");
+				templatePrivacyAgreementCollapsedPGP = Handlebars.compile(sourcePrivacyAgreementCollapsedPGP);
+				var sourcePrivacyAgreementCollapsedSMime = templates.getTemplate("#templatePrivacyAgreementCollapsedSMIME");
+				templatePrivacyAgreementCollapsedSMime = Handlebars.compile(sourcePrivacyAgreementCollapsedSMime);
+				var sourceCommitEMailMin = templates.getTemplate("#templateCommitEMailMin");
+				templateCommitEMailMin = Handlebars.compile(sourceCommitEMailMin);
+				var sourceCommitEMailCollapsed = templates.getTemplate("#templateCommitEMailCollapsed");
+				templateCommitEMailCollapsed = Handlebars.compile(sourceCommitEMailCollapsed);
+				var sourceCommitKeyMin = templates.getTemplate("#templateCommitKeyMin");
+				templateCommitKeyMin = Handlebars.compile(sourceCommitKeyMin);
+				var sourceCommitKeyCollapsed = templates.getTemplate("#templateCommitKeyCollapsed");
+				templateCommitKeyCollapsed = Handlebars.compile(sourceCommitKeyCollapsed);
+				var sourcePrivacyAgreementRevovation = templates.getTemplate("#templatePrivacyAgreementRevovation");
+				templatePrivacyAgreementRevovation = Handlebars.compile(sourcePrivacyAgreementRevovation);
+				var sourceRevokePublicationCollapsed = templates.getTemplate("#templateRevokePublicationCollapsed");
+				templateRevokePublicationCollapsed = Handlebars.compile(sourceRevokePublicationCollapsed);
+
+				var sourceHelpTextPublicKey = templates.getTemplate("#templateHelpTextPublicKey");
+				templateHelpTextPublicKey = Handlebars.compile(sourceHelpTextPublicKey);
+				var sourceHelpTextCertificate = templates.getTemplate("#templateHelpTextCertificate");
+				templateHelpTextCertificate = Handlebars.compile(sourceHelpTextCertificate);
+				var sourceHelpTextEncryptedMail = templates.getTemplate("#templateHelpTextEncryptedMail");
+				templateHelpTextEncryptedMail = Handlebars.compile(sourceHelpTextEncryptedMail);
+
+				var sourceErrorMessage = templates.getTemplate("#templateErrorMessage");
+				templateErrorMessage = Handlebars.compile(sourceErrorMessage);
+				var sourceSuccessMessage = templates.getTemplate("#templateSuccessMessage");
+				templateSuccessMessage = Handlebars.compile(sourceSuccessMessage);
+
+				var sourceAbout = templates.getTemplate("#templateAbout");
+				templateAbout = Handlebars.compile(sourceAbout);
+
+				Application.console.log("All templates have been initialized.");
+            	allTemplatesInitialized.resolve();
+			})
+			.fail(function(data) {
+	        	alert( data );
+	    	});
+
+			// continue
+			$.when(allTemplatesInitialized).done(function() {
+				Application.console.log("Continue initializing ...");
+
+				Application.console.log("Get extension path ...");
+				var extensionPathCompleted = $.Deferred();
+				getExtensionPath(extensionPathCompleted);
+				$.when(extensionPathCompleted).done(function() {
+
+					var readCompleted = $.Deferred();
+					readJSONFilePublishedKeys(readCompleted);
+					$.when(readCompleted).done(function() {
+						Application.console.log("JSON file 'vvv-published-keys.json' successfully read!");
+					});
+
+				});
+			});
+
+			function aboutKeys4All() {
+				$('#nav-welcome').removeClass("link-keys4all");
+				$('#nav-welcome').addClass("font-black");
+
+				$('#nav-about').removeClass("font-black");
+				$('#nav-about').addClass("link-keys4all");
+
+				var context = {};
+				var html = templateAbout(context);
+				$("#body").html(html);
+
+			}
+
+			function loadStart() {
+				$('#nav-welcome').removeClass("font-black");
+				$('#nav-welcome').addClass("link-keys4all");
+
+				$('#nav-about').removeClass("link-keys4all");
+				$('#nav-about').addClass("font-black");
+
+				var context = {};
+				var html = templateStart(context);
+				$("#body").html(html);
+
+			}
+
+		</script>
+
+	</head>
+	<body>
+		<div>
+
+			<table class="table-top">
+				<tr class="table-dark">
+					<td class="td-top">
+						<img src="img/logo.png"/>
+					</td>
+				</tr>
+			</table>
+			<table class="table-left">
+				<tr class="tr-left">
+					<td class="table-dark td-left">
+						<div class="medskip">&nbsp;</div>
+						<div class="medskip">&nbsp;</div>
+						<button class="link-keys4all btn btn-link" id="nav-welcome" onclick="loadStart()">Willkommen</button>
+						<div class="medskip">&nbsp;</div>
+						<button class="font-black btn btn-link" id="nav-keymgmt">Schlüsselverwaltung</button>
+						<div class="medskip">&nbsp;</div>
+						<button class="font-black btn btn-link">FAQ</button>
+						<div class="medskip">&nbsp;</div>
+						<!--span class="font-black" id="nav-about" onclick="aboutKeys4All()">Über Keys4All</span-->
+						<button class="font-black btn btn-link" id="nav-about" onclick="aboutKeys4All()">Über Keys4All</button>
+					</td>
+
+					<td id="body">
+
+						<div class="container">
+							<div class="medskip">&nbsp;</div>
+							<div class="medskip">&nbsp;</div>
+							<div>
+								<span class="small-title">Herzlich Willkommen!</span>
+							</div>
+							<div class="medskip">&nbsp;</div>
+							<div class="medskip">&nbsp;</div>
+
+							<div class="row row-eq-height">
+								<div class="col-lg-8">
+										<div class="row tile tile-large font-black">
+
+											<div class="col-lg-offset-2 col-lg-10 col-lg-offset-1">
+												<div class="medskip">&nbsp;</div>
+												<div width="150px">
+												<a align="right" class="link-keys4all" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-pub-key-button', 'info-certificate-button', 'info-enc-email-button', 'collapse-pub-key', 'collapse-certificate', 'collapse-enc-email');"><img src="img/button-info.png"/></a>
+												</div>
+												</br>
+												<span class="small-title">Einfacher E-Mails verschlüsseln mit Keys4all:</span>
+												<div class="medskip">&nbsp;</div>
+												Keys4all ermittelt die <a class="link-keys4all" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-pub-key-button', 'info-certificate-button', 'info-enc-email-button', 'collapse-pub-key', 'collapse-certificate', 'collapse-enc-email');">öffentlichen Schlüssel</a> oder <a class="link-keys4all" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-certificate-button', 'info-pub-key-button', 'info-enc-email-button', 'collapse-certificate', 'collapse-pub-key', 'collapse-enc-email');">Zertifikate</a> deiner Kontakte, die du zum Versenden verschlüsselter E-Mails benötigst.
+												<div class="medskip">&nbsp;</div>
+												Damit Deine Freunde auch an dich <a class="link-keys4all" data-toggle="modal" href="#helpTextModal" onclick="initInfoModal('info-enc-email-button', 'info-pub-key-button', 'info-certificate-button', 'collapse-enc-email', 'collapse-pub-key', 'collapse-certificate');">verschlüsselte E-Mails</a> senden können, stelle Deinen öffentlichen Schlüssel zur Verfügung.
+												<div class="medskip">&nbsp;</div>
+												<center><img src="img/startseite.png"/></center>
+												<div class="medskip">&nbsp;</div>
+												<center><button class="btn btn-default btn-keys4all " onclick="showSelectKeysPage();"  role="button">Schlüssel zur Verfügung stellen</button></center>
+												<div class="medskip">&nbsp;</div>
+												<div class="medskip">&nbsp;</div>
+											</div>
+
+										</div>
+
+								</div>
+								<div class="col-lg-offset-1 col-lg-3">
+										<div class="row tile tile-small">
+											<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+												<div class="medskip">&nbsp;</div>
+												<span class="font-yellow-large">Wie verschicke ich eine verschlüsselte E-Mail?</span>
+												<div class="medskip">&nbsp;</div>
+												<div class="medskip">&nbsp;</div>
+											</div>
+										</div>
+										<div class="medskip">&nbsp;</div>
+										<div class="medskip">&nbsp;</div>
+										<div class="row tile tile-small">
+											<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+												<div class="medskip">&nbsp;</div>
+												<span class="font-yellow-large">Was macht Keys4all?</span>
+												<div class="medskip">&nbsp;</div>
+												<div class="medskip">&nbsp;</div>
+											</div>
+										</div>
+										<div class="medskip">&nbsp;</div>
+										<div class="medskip">&nbsp;</div>
+										<div class="row tile tile-small" align="bottom">
+											<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+												<div class="medskip">&nbsp;</div>
+												<span class="font-yellow-large">Wie veröffentliche ich meinen öffentlichen Schlüssel?</span>
+												<div class="medskip">&nbsp;</div>
+												<div class="medskip">&nbsp;</div>
+											</div>
+										</div>
+								</div>
+							</div>
+
+						</div> <!-- container -->
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade modal-wide" id="helpTextModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-decoration: none;"><span aria-hidden="true"><img src="img/button-close.png"/></span></button>
+					</div>
+					<div class="modal-body container">
+						<div class="row">
+							<div class="col-md-9">
+								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<h4 class="panel-title">
+												<a id="info-pub-key-button" onclick="toggleModalButton('info-pub-key-button', 'info-certificate-button', 'info-enc-email-button', 'collapse-pub-key', 'collapse-certificate', 'collapse-enc-email');" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-pub-key" aria-expanded="true" aria-controls="collapse-pub-key" class="small-title-accordion">
+													<img src="img/button-extend.png"/>&nbsp;&nbsp;&nbsp;&nbsp;<span class="small-title-accordion">Was ist ein öffentlicher Schlüssel?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-pub-key" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+											<div class="panel-body">
+												<div class="font-black">
+													Für die Verschlüsselung von E-Mails mit dem Verschlüsselungsverfahren PGP benötigst du ein Schlüsselpaar. Dieses besteht aus dem "öffentlichen Schlüssel" und dem "geheimen Schlüssel".
+													<div class="medskip">&nbsp;</div>
+													Deine Kommunikationspartner benötigen deinen "öffentlichen Schlüssel", um E-Mails an dich zu schicken. Mit deinem zugehörigen "privaten Schlüssel" kannst du diese dann wieder entschlüsseln.
+												</div>
+												<div class="medskip">&nbsp;</div>
+												<center><img src="img/oeffentlicher-schluessel.png"/></center>
+												<div class="medskip">&nbsp;</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingTwo">
+											<h4 class="panel-title">
+												<a id="info-certificate-button" onclick="toggleModalButton('info-certificate-button', 'info-pub-key-button', 'info-enc-email-button', 'collapse-certificate', 'collapse-pub-key', 'collapse-enc-email');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-certificate" aria-expanded="false" aria-controls="collapse-certificate">
+													<img src="img/button-extend.png"/>&nbsp;&nbsp;&nbsp;&nbsp;<span class="small-title-accordion">Was ist ein Zertifikat?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-certificate" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+											<div class="panel-body">
+												<div class="font-black">
+												Zur Verschlüsselung von E-Mails mit dem Verschlüsselungsverfahren S/MIME benötigst du ein Zertifikat. Das Zertifikat enthält deinen "öffentlichen Schlüssel", den deine Kommunikationspartner benötigen, um dir verschlüsselte E-Mails zu schicken. Mit deinem zugehörigen "privaten Schlüssel", den nur du hast, kannst du diese dann wieder entschlüsseln.
+												</div>
+												<div class="medskip">&nbsp;</div>
+												<center><img src="img/zertifikat-gross.png"/></center>
+												<div class="medskip">&nbsp;</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingThree">
+											<h4 class="panel-title">
+												<a id="info-enc-email-button" onclick="toggleModalButton('info-enc-email-button', 'info-pub-key-button', 'info-certificate-button', 'collapse-enc-email', 'collapse-pub-key', 'collapse-certificate');" class="small-title-accordion" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-enc-email" aria-expanded="false" aria-controls="collapse-enc-email">
+													<img src="img/button-extend.png"/>&nbsp;&nbsp;&nbsp;&nbsp;<span class="small-title-accordion">Was ist eine verschlüsselte E-Mail?</span>
+												</a>
+											</h4>
+										</div>
+										<div id="collapse-enc-email" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+											<div class="panel-body">
+												<div class="font-black">
+												E-Mail-Verschlüsselung wird verwendet, um vertrauliche Informationen so per E-Mail zu verschicken, dass niemand außer Sender und Empfänger Zugang zu diesen Informationen bekommen. Ein Verschlüsselungsprogramm erzeugt dabei mit Hilfe eines öffentlichen Schlüssels aus deinem Text einen Geheimtext. Nur der Empfänger, der den zugehörigen privaten Schlüssel hat, kann den Text wieder entschlüsseln.
+												</div>
+												<div class="medskip">&nbsp;</div>
+												<center><img src="img/verschluesselte-email.png"/></center>
+												<div class="medskip">&nbsp;</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<div class="modal-footer">
+
+					</div>-->
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" tabindex="-1" role="dialog" id="errorModal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Fehler</h4>
+					</div>
+					<div class="modal-body" id="errorModalBody">
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+
+
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
+		<!-- Menu Toggle Script -->
+		<script>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+    	</script>
+
+	</body>
+</html>

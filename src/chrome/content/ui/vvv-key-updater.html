@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--
+Keys4All Thunderbird-Addon
+Designed and developed by
+Fraunhofer Institute for Secure Information Technology SIT
+<https://www.sit.fraunhofer.de>
+(C) Copyright FhG SIT, 2018
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<title>VVV Schlüsselaktualisierung</title>
+
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/simple-sidebar.css" rel="stylesheet">
+		<link href="css/vvv.css" rel="stylesheet">
+
+		<script src="js/jquery-2.2.3.min.js"></script>
+
+		<script type="text/javascript" src="js/jquery.mustache.js"></script>
+		<script type="text/javascript" src="js/mustache.min.js"></script>
+		<script type="text/javascript" src="js/vvv-templateloader.js"></script>
+		<script type="text/javascript" src="js/openpgp.min.js"></script>
+
+		<script src="js/vvv-key-cache.js"></script>
+		<script src="js/modules.js"></script>
+  </head>
+  <body>
+    <h1>Updating keys</h1>
+		<div id="update-keys-content">
+			Die Schlüssel-Datenbank wird aktualisiert...
+		</div>
+
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
+    <script>
+			//TODO: Schlüssel-Update asynchron gestalten
+			/*
+      window.addEventListener("load", function(e) {
+				 KeyDiscoverer.callback = function (recipientsToProcess, processedRecipients) {
+					 if(recipientsToProcess.length === 0) {
+						 document.getElementById("update-keys-content").innerHTML = "<h4>Alle Schlüssel wurden erfolgreich aktualisiert!</h4>";
+					 }
+				 }
+         KeyDiscoverer.updateKeys(function() {Application.console.log("\n\n\nUpdated Keys\n\n\n");});
+      }, false);
+			*/
+    </script>
+</body>
+</html>

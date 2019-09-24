@@ -1,0 +1,8 @@
+content vvv-addon chrome/content/ contentaccessible=yes
+skin vvv-addon classic/1.0 chrome/skin/
+locale vvv-addon en-US chrome/locale/en-US/
+locale vvv-addon de-DE chrome/locale/de-DE/
+
+overlay chrome://messenger/content/messenger.xul chrome://vvv-addon/content/main-window.xul
+overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://vvv-addon/content/vvv-key-lookup-overlay.xul
+

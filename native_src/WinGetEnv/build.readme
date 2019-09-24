@@ -1,0 +1,2 @@
+
+cmake -DCMAKE_TOOLCHAIN_FILE=~/Toolchain-cross-mingw32-linux.cmake ..

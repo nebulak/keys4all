@@ -4,8 +4,6 @@ Keys4All-Addon for Thunderbird
 
 ![screenshot](../Screenshots/verschlüsselung-aktiviert-2.png "Screenshot")
 
-This is a proof of concept addon, I created (as part-time software developer at Fraunhosfer SIT) with other developers at Fraunhofer SIT.
-
 
 ## Features
 

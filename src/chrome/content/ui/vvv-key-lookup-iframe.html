@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!--
+Keys4All Thunderbird-Addon
+Designed and developed by
+Fraunhofer Institute for Secure Information Technology SIT
+<https://www.sit.fraunhofer.de>
+(C) Copyright FhG SIT, 2018
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<title>VVV</title>
+
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/vvv.css" rel="stylesheet">
+
+		<script src="js/jquery-2.2.3.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/handlebars.min.js"></script>
+		<script src="js/openpgp.min.js"></script>
+		<script src="js/sha256.min.js"></script>
+		<script src="js/vvv-key-cache.js"></script>
+		<script src="js/modules.js"></script>
+		<script src="js/vvv-key-lookup-iframe.js"></script>
+	</head>
+
+	<body id="body" class="table-dark">
+		<div class="modal-header">
+			<button type="button" class="close" aria-label="Close" onClick="closeVVViFrame();"><span aria-hidden="true">&times;</span></button>
+			<br/>
+			<img src="img/logo.png" style="display: block; margin-left: auto; margin-right: auto;"/>
+			<br/>
+			<div class="tile tile-spacer-small col-md-4 bg-light font-black">
+				<div class="modal-title small-title" id="myModalLabel">&nbsp;&nbsp;&nbsp;Schlüsselsuche</div>
+				<div class="box" id="vvv-iframe-body"></div>
+			</div>
+		</div>
+
+
+
+	</body>
+
+	<!-- handlebars templates -->
+	<script id="iframe-key-table" type="text/x-handlebars-template">
+		<div class="row content modal-body" >
+			<!--<div id="lookup-progress">
+			Anzahl zu prüfender Empfänger: {{pgpRecipientsInQueue}}<br/>
+			</div>-->
+			<!--<div class="loader">Loading...</div>-->
+			<div class="divider-10"></div>
+				<!--div class="row content-fill container" id="vvv-iframe-recommendations"-->
+				<div id="recommendation-content">
+
+				</div>
+				<!--div class="tile-yellow col-md-4">
+					<div class="row" id="recommendation-content">
+
+					</div>
+				</div-->
+				<div class="tile tile-spacer-small col-md-4 font-black">
+					<p>
+						<div class="tiny-title">Meine Schlüssel:</div>
+					</p>
+					<p>
+						<table class="table table-condensed table-no-border">
+							<thead>
+								<tr>
+									<th></th>
+									<th class="center" width="30"></th>
+									<th class="center" width="30"></th>
+								</tr>
+			 				</thead>
+			 				<tbody id="sender-email">
+								{{#if sender.address}}
+									<tr><td class="email-text">{{sender.address}}</td>
+									{{#if sender.pgp}}
+										<td class="center" width="30"><small><img src="img/icon-pgpkey.png" style="margin-left: auto; margin-right: auto;"/></small></td>
+									{{else}}
+										<td class="center" width="30"></td>
+									{{/if}}
+									{{#if sender.smime}}
+										<td class="center" width="30"><small><img src="img/icon-cert.png" style="margin-left: auto; margin-right: auto;"/></small></td>
+									{{else}}
+										<td class="center" width="30"></td>
+									{{/if}}
+								{{/if}}
+							</tbody>
+						</table>
+					</p>
+				</div>
+			<div class="divider-10"></div>
+			<div class="tile tile-spacer-small col-md-4 font-black">
+				<p>
+					<div class="tiny-title">Schlüssel meiner Empfänger:</div>
+				</p>
+				<p>
+					<table class="table table-condensed table-no-border">
+						<thead>
+							<tr>
+				 				<th></th>
+			 					<th class="center" width="30"></th>
+			 					<th class="center" width="30"></th>
+			 				</tr>
+		 				</thead>
+		 				<tbody id="recipients-list">
+							{{#each processedRecipients}}
+								<tr><td class="email-text">{{this.email}}</td>
+									{{#if this.isPGPVVV}}
+										<td class="center" width="30"><small><img src="img/icon-pgpkey.png" style="margin-left: auto; margin-right: auto;"/></small></td>
+									{{else if this.isPGPAvailable}}
+										<td class="center" width="30"><small><img src="img/icon-key.png" style="margin-left: auto; margin-right: auto;"/></small></td>
+									{{else}}
+										<td class="center" width="30"><img src="img/icon-none.png" style="margin-left: auto; margin-right: auto;"/></small></td>
+									{{/if}}
+									{{#if this.isSMIMEVVV}}
+										<td class="center" width="30"><small><img src="img/icon-cert.png" style="margin-left: auto; margin-right: auto;"/></small></td>
+									{{else if this.isSMIMEAvailable}}
+										<td class="center" width="30"><small><img src="img/icon-certificate.png" style="margin-left: auto; margin-right: auto;"/></small></td>
+									{{else}}
+										<td class="center" width="30"><img src="img/icon-none.png" style="margin-left: auto; margin-right: auto;"/></small></td>
+									{{/if}}
+								</tr>
+							{{/each}}
+
+							{{#each recipientsToProcess}}
+								<tr>
+									<td class="email-text">{{this}}</td>
+									<td colspan="2" class="center" width="60"><div class="loader"></div></td>
+								</tr>
+							{{/each}}
+
+						</tbody>
+					</table>
+				</p>
+			</div>
+		</div>
+
+
+	</script>
+
+	<script id="recommendation-separate-mails" type="text/x-handlebars-template">
+		<div class="row tile-gray col-md-4">
+			<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 tile-gray-content">
+				<img src="img/lock-unlocked.png" align="left" style="align: left; padding-right: 5px; padding-top: 10px;"/>
+				<p></p>
+				<p>
+					<strong>Verschlüsselung leider nicht möglich</strong>
+				</p>
+				<p>
+					<div class="text-small">{{text1}}</div>
+				</p>
+				<p>
+					<div class="text-small">{{text2}}</div>
+				</p>
+				<p align="center">
+					<button id="btn-seperate-mails" type="button" class="btn-recommendation" onClick="duplicateMail({{numberOfMails}}, '{{recipientGroupMail1}}', '{{recipientGroupMail2}}', '{{recipientGroupMail3}}');">Problem lösen</button>
+				</p>
+			</div>
+		</div>
+	</script>
+
+	<script id="recommendation-add-text" type="text/x-handlebars-template">
+		<div class="row tile-gray col-md-4">
+			<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 tile-gray-content">
+				<img src="img/lock-unlocked.png" align="left" style="align: left; padding-right: 5px; padding-top: 10px;"/>
+				<p></p>
+				<p>
+					<strong>Verschlüsselung leider nicht möglich</strong>
+				</p>
+				<p>
+					<div class="text-small">{{text}}</div>
+				</p>
+					<div class="text-small"> Empfehle deinem Kontakt Keys4All, damit ihr in Zukunft eure Nachrichten verschlüsseln könnt.</div>
+				<p align="center">
+					<button id="btn-recommend" type="button" class="btn-recommendation" onClick="setTimeout(addRecommendationText('{{keytype}}'), 500);">Keys4All empfehlen</button>
+				</p>
+			</div>
+		</div>
+	</script>
+
+	<script id="recommendation-key-required" type="text/x-handlebars-template">
+		<div class="row tile-gray col-md-4">
+			<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 tile-gray-content">
+				<img src="img/lock-unlocked.png" align="left" style="align: left; padding-right: 5px; padding-top: 10px;"/>
+				<p></p>
+				<p>
+					<strong>Verschlüsselung leider nicht möglich</strong>
+				</p>
+				<p>
+					<div class="text-small">{{text}}</div>
+				</p>
+				<p>
+					<div class="text-small">Erfahre mehr über das Thema E-Mail-Verschlüsselung und besorge dir einen Schlüssel.</div>
+				</p>
+				<p align="center">
+					<!-- button id="btn-encryption-portal" type="button" class="btn-recommendation" onClick="openEncryptionPortal();">Zum Verschlüsselungsportal</button-->
+				</p>
+			</div>
+		</div>
+	</script>
+
+	<script id="recommendation-success" type="text/x-handlebars-template">
+			<div class="row tile-yellow col-md-4">
+				<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 tile-yellow-content">
+					<img src="img/lock-locked.png" align="left" style="align: left; padding-right: 5px; padding-top: 10px;"/>
+					<p></p>
+					<p>
+						<strong>Die E-Mail kann verschlüsselt werden</strong>
+					</p>
+				</div>
+			</div>
+	</script>
+
+	<script id="recommendation-blank" type="text/x-handlebars-template">
+		<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1">
+			<p></p>
+		</div>
+	</script>
+
+	<script id="iframe-encryption-disabled" type="text/x-handlebars-template">
+		<div class="divider-10"></div>
+		<div class="alert alert-info" role="alert">
+		E-Mail-Verschlüsselung ist deaktiviert.
+		</div>
+	</script>
+
+</html>
